@@ -1,0 +1,711 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #eff0f3;
+}
+
+.container {
+  padding: 20px;
+}
+
+/* Card Deck Başlangıçta dikey */
+.card-deck {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.card {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+  padding: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+
+
+/* 576px ve üstünde yan yana */
+@media (min-width: 576px) {
+  .card-deck {
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+  }
+}
+
+/* Card stili */
+.card {
+  flex:1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+  padding: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+
+/* Card başlık */
+.card .card-title,
+.card .card-text {
+  font-family: 'Lucida Sans', 'Lucida Grande', sans-serif; /* istediğin font */
+  font-size: 16px;      /* isteğe bağlı font boyutu */
+  font-weight: 500;     /* isteğe bağlı kalınlık */
+  color: #333;          /* isteğe bağlı renk */
+}
+
+
+/* Sidebar başlangıç */
+.sidebar-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;      /* sidebar genişliği */
+  height: 100vh;
+  background-color: #27364A; /* sidebar arka plan rengi */
+  color: #f0f0f0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  transform: translateX(0);
+  z-index: 1000;
+}
+
+/* Sidebar gizleme */
+.page.wrapper.toggled .sidebar-wrapper {
+  transform: translateX(-100%);
+}
+
+/* İçerik (sidebar kapalıyken genişler) */
+.page.wrapper main.page-content {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+  overflow: hidden; /* İçerik taşmasını önler */
+}
+
+.page.wrapper.toggled main.page-content {
+  margin-left: 0;
+}
+
+/* Logo ve kapatma butonu */
+.sidebar-brand {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.sidebar-brand img {
+  max-height: 40px;
+  display: block;
+}
+
+#close-sidebar {
+  position: absolute;
+  display: block;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #e0dddd;
+  width: 18px;
+  height: 18px;
+  z-index: 1010;
+}
+
+.sidebar-menu .sidebar-dropdown > a > span {
+  font-family: Georgia, 'Times New Roman', Times, serif; /* Veya istediğin başka bir font */
+  font-size: 15px;                   /* İsteğe bağlı */
+  font-weight: 500;                  /* Orta kalınlık */
+  color: #eff0f3;                    /* Yazı rengi isteğe bağlı */
+}
+
+
+.page.wrapper.toggled #show-sidebar {
+  transform: translateX(0);
+  opacity: 1;
+  display: block;
+}
+
+#show-sidebar svg {
+  color: white;
+  width: 20px;
+  height: 20px;
+}
+
+/* --------------------------------------- */
+/* Menü başlıkları: soldaki ikonlara dayalı, yazılar solda, ok sağda */
+/* --------------------------------------- */
+.sidebar-dropdown > a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Yazı ve ikon sola hizalı */
+  padding: 12px 30px 12px 12px; /* üst sağ alt sol (sağda ok için geniş boşluk) */
+  color:  #ffffff;
+  text-decoration: none;
+  user-select: none;
+  gap: 10px; /* İkon ile yazı arası boşluk */
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-dropdown > a:hover {
+  color: #ffffff;
+  background: none; /* Arka plan değişmesin */
+  border-left: none; /* Border değişmesin */
+  font-weight: bold; /* Kalınlık değişmesin */
+}
+
+/* Örnek ikon stili, ikon varsa */
+.sidebar-dropdown > a .icon {
+  min-width: 20px; /* Sabit genişlik */
+  display: inline-flex;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Sağdaki ok işareti */
+.sidebar-dropdown > a::after {
+  content: "›";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #f9f4f4;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Menü açıkken oku döndür */
+.sidebar-dropdown.active > a::after {
+  transform: translateY(-50%) rotate(90deg);
+  color: #fff;
+}
+
+/* Alt menü */
+.sidebar-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding-left: 35px; /* İkon ve ana menüden girinti */
+  margin-top: 8px;
+}
+
+/* Alt menü açıldığında */
+.sidebar-dropdown.active .sidebar-submenu {
+  max-height: 500px; /* yeterince büyük */
+}
+
+/* Alt menüdeki liste */
+.sidebar-submenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+}
+
+/* Alt menü liste elemanları */
+.sidebar-submenu ul li {
+  margin-bottom: 12px; /* alt-üst mesafe */
+ 
+}
+
+/* Alt menü linkleri */
+.sidebar-submenu ul li a {
+  display: block;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 0;
+  transition: color 0.3s ease;
+  
+}
+
+/* Alt menü link hover */
+.sidebar-submenu ul li a:hover {
+  color: #ffffff;
+}
+
+/* Sidebar yapısında footer'ı alta yapıştırır */
+.sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Footer görsel ayarı */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px 10px;
+    text-align: center;
+    border-top: 1px solid #444;
+    background-color: #27364A; /* Sidebar ile uyumlu bir arka plan */
+}
+
+/* Footer link stili */
+.sidebar-footer a {
+    color: #ccc;
+    font-weight: bold;
+    text-decoration: underline;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s ease;
+}
+
+.sidebar-footer a:hover {
+    color: #fffafa;
+}
+
+.sidebar-footer svg {
+    fill: currentColor;
+    width: 14px;
+    height: 14px;
+}
+.sidebar-header {
+  padding: 10px 16px; /* Menü öğeleriyle aynı yatay boşluk */
+  border-bottom: 1px solid #ccc; /* Alt çizgi */
+  border-top: 0.1px solid #ccc; /* Üst çizgi */
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #eff0f3; /* Yazı rengi */
+}
+.sidebar-submenu ul {
+  list-style-type: none;  /* Noktaları kaldır */
+  padding-left: 0;     /* Sol boşluk */
+  margin: 0;              /* Gerekirse margin sıfırla */
+}
+
+.sidebar-submenu ul li {
+  position: relative;
+  padding-left: 20px;     /* Simge için boşluk */
+  margin-bottom: 6px;     /* Alt boşluk 
+  (isteğe bağlı) */
+  line-height: 1.8;
+  display: flex;
+  align-items: center;    /* Metni dikey ortala */
+}
+
+.sidebar-submenu ul li::before {
+  content: "▸";           /* Ok işareti simgesi */
+  color: teal;            /* İstediğin renk */
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: bold;
+}
+.sidebar-menu ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+.header-menu {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #f2f0f0;
+  padding: 10px 16px; /* Menü öğeleriyle aynı yatay boşluk */
+  
+  text-align: left;
+  display: flex;
+}
+.sidebar-dropdown.active > a {
+
+  font-weight: bold;
+  color: #faeee7;
+  border-left: 4px solid teal;
+}
+.mini-sidebar-menu {
+  display: none;
+  position: absolute;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 10px;
+  top: 40px; /* hamburger ikonunun hemen altı */
+  left: 10px;
+  z-index: 999;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+#show-sidebar:hover .mini-sidebar-menu {
+  display: flex;
+}
+
+.mini-sidebar-menu a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.mini-sidebar-menu a:hover {
+  background: #ddd;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media screen and (max-width: 576px) {
+  #show-sidebar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar-brand img {
+    max-height: 30px;
+  }
+
+  .card-title {
+    font-size: 14px;
+  }
+
+  .card-text {
+    font-size: 13px;
+  }
+
+  .mini-sidebar-menu {
+    left: 0;
+    top: 35px;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .mini-sidebar-menu a {
+    width: 30px;
+    height: 30px;
+  }
+}
+/* Üç çizgi başlangıçta gizli */
+#show-sidebar {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 0;
+    z-index: 1001;
+    background: #343a40;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Çarpı başlangıçta görünür */
+#close-sidebar {
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1002;
+}
+
+/* Sidebar varsayılan açık */
+.sidebar-wrapper {
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+}
+
+/* Mobilde (768px ve altı) */
+@media (max-width: 768px) {
+
+    /* Sidebar kapalı ise (toggled class var) */
+    .page.wrapper.toggled .sidebar-wrapper {
+        transform: translateX(-260px); /* sidebar gizli */
+    }
+
+    /* Sidebar kapalı ise üç çizgi görünür */
+    .page.wrapper.toggled #show-sidebar {
+        display: block;
+    }
+
+    /* Sidebar kapalı ise çarpı gizli */
+    .page.wrapper.toggled #close-sidebar {
+        display: none;
+    }
+
+    /* Sidebar açık ise üç çizgi gizli */
+    .page.wrapper:not(.toggled) #show-sidebar {
+        display: none;
+    }
+
+    /* Sidebar açık ise çarpı görünür */
+    .page.wrapper:not(.toggled) #close-sidebar {
+        display: block;
+    }
+}
+.list-group-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.col {
+    flex: 0 0 60%;
+    max-width: 60%;
+}
+.col-6 {
+    flex: 0 0 40%;
+    max-width: 40%;
+}
+/* Tüm elementler için box-sizing ayarı */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.station-info-map {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* Sol panel: bilgi yığını */
+.info-panel {
+  flex: 1;
+  border: 2px solid #ccc;    /* Border ekledik */
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* Dikey ortalama */
+  
+}
+.info-panel li
+{
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', sans-serif;
+}
+.info-panel li span.label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.info-panel li span.value {
+  color: #222;
+}
+.info-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.info-panel li:hover {
+  background-color: #fff;
+}
+
+/* Sağ panel: harita */
+.map-panel {
+  flex: 2;
+}
+
+.map-panel #map {
+  height: 400px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Mobilde üst üste olması için */  
+@media(max-width: 767px) {
+  .station-info-map {
+    flex-direction: column;
+  }
+}
+@media(max-width: 767px) {
+  .info-panel li {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+.additional-info {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.extra-info-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.extra-info-list li {
+  padding: 8px 0;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.extra-info-list li:last-child {
+  border-bottom: none;
+}
+.two-column-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.two-column-info > div {
+  flex: 1 1 45%;
+  background: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+}
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+/* Genel form yapısı */
+form {
+  background-color: #f8f9fa; /* Açık gri arka plan */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form başlığı */
+h2 {
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid #ccc;
+  margin-bottom: 30px;
+}
+
+/* Form içi her grup */
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Label kısmı */
+.form-group label {
+  width: 200px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Input alanı */
+.form-group input.form-control {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+/* Input focus hali */
+.form-group input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgb(216, 235, 255);
+  outline: none;
+}
+
+/* Buton stili */
+#btnSendToDevice {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#btnSendToDevice:hover {
+  background-color: #0056b3;
+}
+
+/* Giriş doğrulama uyarı metinleri */
+span[id$="Validate"] {
+  margin-left: 10px;
+  font-size: 13px;
+  color: red;
+}
+
+/* Responsive yapı için */
+@media (max-width: 768px) {
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-group label {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  #btnSendToDevice {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+
+
