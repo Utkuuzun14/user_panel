@@ -34,13 +34,7 @@ body {
 }
 
 
-/* 576px ve üstünde yan yana */
-@media (min-width: 576px) {
-  .card-deck {
-    flex-flow: row nowrap;
-    justify-content: space-evenly;
-  }
-}
+
 
 /* Card stili */
 .card {
@@ -371,36 +365,7 @@ body {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@media screen and (max-width: 576px) {
-  #show-sidebar {
-    width: 30px;
-    height: 30px;
-  }
 
-  .sidebar-brand img {
-    max-height: 30px;
-  }
-
-  .card-title {
-    font-size: 14px;
-  }
-
-  .card-text {
-    font-size: 13px;
-  }
-
-  .mini-sidebar-menu {
-    left: 0;
-    top: 35px;
-    padding: 8px;
-    gap: 6px;
-  }
-
-  .mini-sidebar-menu a {
-    width: 30px;
-    height: 30px;
-  }
-}
 /* Üç çizgi başlangıçta gizli */
 #show-sidebar {
     display: none;
@@ -777,6 +742,9 @@ span[id$="Validate"] {
     padding-right: 5px;
     padding-left: 5px;
 }
+/* ================================
+   RECORD TABLE – MASAÜSTÜ (Varsayılan)
+   ================================ */
 .record-table {
   width: 100%;
   border-collapse: collapse;
@@ -814,6 +782,7 @@ span[id$="Validate"] {
   padding: 14px 20px;
   text-align: center;
   border-bottom: 1px solid #ddd;
+  vertical-align: middle;
 }
 
 /* Alternatif satır arkaplanı */
@@ -821,8 +790,28 @@ span[id$="Validate"] {
   background-color: #f1f1f1;
 }
 
-/* Mobil için eski responsive yapı aynı kalıyor */
-@media (max-width: 600px) {
+/* Opsiyonel: çok satır olursa dikey scroll isteyenler için modifier class */
+.record-table--scroll thead,
+.record-table--scroll tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.record-table--scroll tbody {
+  display: block;
+  max-height: 180px;      /* ihtiyaca göre değiştir */
+  overflow-y: auto;
+  width: 100%;
+}
+
+/* ================================
+   RECORD TABLE – MOBİL (<=768px)
+   Kart/Stack görünüm
+   ================================ */
+@media (max-width: 768px) {
+
+  /* Masaüstü tablo davranışlarını kapat */
   .record-table,
   .record-table thead,
   .record-table tbody,
@@ -830,58 +819,74 @@ span[id$="Validate"] {
   .record-table td,
   .record-table tr {
     display: block;
+    width: 100%;
   }
 
+  /* Scroll ve max-height mobilde iptal */
+  .record-table tbody {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  /* Başlık satırını gizle (etiketleri biz vereceğiz) */
+  .record-table thead {
+    display: none;
+  }
+
+  /* Satır kart gibi */
   .record-table tr {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-  }
-
-  .record-table th,
-  .record-table td {
     padding: 10px;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .record-table th::after,
-  .record-table td::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid #ddd;
-    margin: 0 10px;
+    background: #fff;
   }
 
   .record-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #eee;
     position: relative;
+    padding-left: 45%;      /* solda etiket için yer */
+    white-space: normal;
   }
 
+  .record-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Varsayılan before stili */
   .record-table td::before {
-    content: attr(data-label);
     position: absolute;
     left: 10px;
-    top: 10px;
+    top: 8px;
+    width: 40%;
     font-weight: bold;
     color: #333;
+    white-space: nowrap;
+    content: ""; /* içerikleri nth-child ile dolduruyoruz */
   }
-}
-.container-fluid {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+
+  /* Sütun etiketleri (HTML'e dokunmadan) */
+  .record-table td:nth-child(1)::before { content: "Aktif"; }
+  .record-table td:nth-child(2)::before { content: "Başlangıç Saati"; }
+  .record-table td:nth-child(3)::before { content: "Bitiş Saati"; }
+  .record-table td:nth-child(4)::before { content: "Kayıt Sıklığı"; }
+  .record-table td:nth-child(5)::before { content: "Zaman Birimi"; }
 }
 
-.page-wrapper .page-content>div {
-    padding: 20px 40px;
-}
-
-.table-wrapper {
-  max-height: 180px; /* Yaklaşık 3 satır yüksekliği */
-  overflow-y: auto;
-  border: 1px solid #ddd;
+/* Daha ufak ekran mikro ayar (isteğe bağlı) */
+@media (max-width: 480px) {
+  .record-table td {
+    padding-left: 52%;
+  }
+  .record-table td::before {
+    width: 48%;
+    font-size: 13px;
+  }
+  /* İstersen daha kısa label kullan:
+  .record-table td:nth-child(2)::before { content: "Başl."; }
+  .record-table td:nth-child(3)::before { content: "Bitiş"; }
+  */
 }

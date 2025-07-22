@@ -1,57 +1,55 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_apscheduler import APScheduler
+from flask import Flask, request, render_template, redirect, url_for , jsonify
 from datetime import datetime
+import os
+import random
 
 app = Flask(__name__)
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
 
-# Ana Sayfa (istersen yönlendirilebilir)
 @app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route('/')
 def index():
-    return redirect(url_for("settings_record"))
+    return render_template('/settings/recordset.html')
 
-# SettingsRecord Sayfası
-@app.route("/settingsRecord")
-def settings_record():
-    return render_template("settings/recordset.html")
-
-@app.route("/startRecording", methods=["POST"])
+@app.route("/start_recording", methods=["POST"]) 
 def start_recording():
-    interval = request.form.get("recordPeriod")
-    start_times = request.form.getlist("startTime[]")
+    # Formdan verileri alıyoruz
+    active_flags = request.form.getlist("active[]")
+    start_times = request.form.getlist("startTime[]")  # form input name ile birebir eşleşmeli
     end_times = request.form.getlist("endTime[]")
-    frequencies = request.form.getlist("frequency[]")
+    durations = request.form.getlist("duration[]")
     units = request.form.getlist("unit[]")
-    actives = request.form.getlist("active[]")
+    
+    # "active[]" checkbox'ları formda 'on' olarak geliyor, işaretli olanların indexlerini alıyoruz
+    active_indices = [i for i, val in enumerate(active_flags) if val == 'on']
+    array_size = len(active_indices)
 
-    print("recordPeriod:", interval)
-    print("startTimes:", start_times)
-    print("endTimes:", end_times)
-    print("frequencies:", frequencies)
-    print("units:", units)
-    print("actives:", actives)
+    output_lines = []
+    output_lines.append(f"arraysize: {array_size}\n")
 
-    return redirect(url_for("settings_record"))
+    for new_index, original_index in enumerate(active_indices):
+        start = start_times[original_index]
+        end = end_times[original_index]
+        dura = durations[original_index]
+        unit = units[original_index]
 
+        test_data = get_machine_data(new_index)
 
-# Kayıt Alınan Fonksiyon (Terminal + Dosyaya kayıt)
-def record_data():
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print(f"Kayıt alındı: {now}")
-    with open("records.txt", "a") as f:
-        f.write(f"{now}\n")
+        output_lines.append(f"[{new_index}] start: {start}, end: {end}, duration: {duration}, unit: {unit}, data: {test_data}")
 
-# # Kayıtları Gösteren Sayfa (opsiyonel)
-# @app.route("/recordLogs")
-# def show_logs():
-#     try:
-#         with open("records.txt", "r") as f:
-#             lines = f.readlines()[-30:]  # Son 30 kayıt
-#     except FileNotFoundError:
-#         lines = []
-#     return render_template("record_logs.html", logs=lines)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"time_records_{timestamp}.txt"
+
+    with open(filename, 'w') as file:
+        file.write("\n".join(output_lines))
+
+    return jsonify({"message": f"{filename} dosyasına kaydedildi."})
+
+def get_machine_data(index):
+    # Gerçek makineden veri gelene kadar test verisi döndür
+    return f"TEST_DATA_for_index_{index}"
 
 if __name__ == "__main__":
-    app.run(debug=True,port="5500")
+    app.run(debug=True)
