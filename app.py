@@ -1,28 +1,53 @@
-from flask import Flask, request, render_template, redirect, url_for , jsonify
+from flask import Flask, request, render_template, jsonify
 from datetime import datetime
 import os
-import random
+import glob
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+@app.route('/load_records')
+def load_records():
+    list_of_files = glob.glob("time_records/*.txt")
+    if not list_of_files:
+        return jsonify({"error": "No files found"})
 
+    latest_file = max(list_of_files, key=os.path.getctime)
+
+    with open(latest_file, "r") as f:
+        lines = f.readlines()
+
+    records = []
+    for line in lines:
+        if line.startswith("[time_based_record_"):
+            record = {}
+            header_end = line.find("]") + 1
+            header = line[1:header_end - 1]  # örnek: time_based_record_0
+            line_data = line[header_end:].strip()
+            record["record_id"] = header
+
+            parts = line_data.split(", ")
+            for part in parts:
+                if ": " in part:
+                    key, val = part.split(": ", 1)
+                    record[key.strip()] = val.strip()
+            records.append(record)
+
+    return jsonify(records)
+
+# Arayüz
 @app.route('/')
 def index():
     return render_template('/settings/recordset.html')
 
-@app.route("/start_recording", methods=["POST"]) 
+# Formdan gelen kayıt verilerini işleyip .txt dosyasına yazar
+@app.route("/start_recording", methods=["POST"])
 def start_recording():
-    # Formdan verileri alıyoruz
     active_flags = request.form.getlist("active[]")
-    start_times = request.form.getlist("startTime[]")  # form input name ile birebir eşleşmeli
+    start_times = request.form.getlist("startTime[]")
     end_times = request.form.getlist("endTime[]")
     durations = request.form.getlist("duration[]")
     units = request.form.getlist("unit[]")
-    
-    # "active[]" checkbox'ları formda 'on' olarak geliyor, işaretli olanların indexlerini alıyoruz
+
     active_indices = [i for i, val in enumerate(active_flags) if val == 'on']
     array_size = len(active_indices)
 
@@ -37,18 +62,24 @@ def start_recording():
 
         test_data = get_machine_data(new_index)
 
-        output_lines.append(f"[{new_index}] start: {start}, end: {end}, duration: {duration}, unit: {unit}, data: {test_data}")
+        output_lines.append(
+            f"[time_based_record_{new_index}] start: {start}, end: {end}, duration: {dura}, unit: {unit}, data: {test_data}"
+        )
+
+    # Klasör yoksa oluştur
+    if not os.path.exists("time_records"):
+        os.makedirs("time_records")
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"time_records_{timestamp}.txt"
+    filename = f"time_records/time_records_{timestamp}.txt"
 
     with open(filename, 'w') as file:
         file.write("\n".join(output_lines))
 
     return jsonify({"message": f"{filename} dosyasına kaydedildi."})
 
+# Test verisi simülasyonu
 def get_machine_data(index):
-    # Gerçek makineden veri gelene kadar test verisi döndür
     return f"TEST_DATA_for_index_{index}"
 
 if __name__ == "__main__":

@@ -280,7 +280,7 @@
       <table class="record-table">
         <thead>
           <tr>
-            <th></th>
+            <th></th> 
             <th>Başlangıç Saati</th>
             <th>Bitiş Saati</th>
             <th>Kayıt Sıklığı</th>
@@ -535,6 +535,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   }
+
+  // --- Sayfa açıldığında backend'den en son kaydı çek ---
+  fetch('/load_records')
+    .then(res => res.json())
+    .then(records => {
+      if (!Array.isArray(records)) return;
+
+      const actives   = document.querySelectorAll('input[name="active[]"]');
+      const starts    = document.querySelectorAll('input[name="startTime[]"]');
+      const ends      = document.querySelectorAll('input[name="endTime[]"]');
+      const durations = document.querySelectorAll('input[name="duration[]"]');
+      const units     = document.querySelectorAll('select[name="unit[]"]');
+
+      records.forEach((rec, i) => {
+        if (i >= starts.length) return;
+
+        if (actives[i]) actives[i].checked = true;
+        if (starts[i] && rec.start) starts[i].value = rec.start;
+        if (ends[i] && rec.end) ends[i].value = rec.end;
+        if (durations[i] && rec.duration) durations[i].value = rec.duration;
+
+        if (units[i] && rec.unit) {
+          const opts = units[i].options;
+          for (let j = 0; j < opts.length; j++) {
+            if (opts[j].value.toLowerCase() === rec.unit.toLowerCase()) {
+              opts[j].selected = true;
+              break;
+            }
+          }
+        }
+      });
+    })
+    .catch(err => console.error("load_records error:", err));
 });
 
 // --- Toast mesaj fonksiyonu ---
@@ -552,9 +585,12 @@ function showToast(message, duration = 3000) {
     // animasyon bitince görünürlüğü sıfırla
     setTimeout(() => {
       toast.style.visibility = "hidden";
-    }, 500); // slideOut süresi
+    }, 500);
   }, duration);
 }
+</script>
+
+
 
 </script>
 
