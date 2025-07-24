@@ -82,5 +82,12 @@ def start_recording():
 def get_machine_data(index):
     return f"TEST_DATA_for_index_{index}"
 
+@app.route('/advancedsetting')
+def advancedsetting():
+    return render_template('advancedset.html')
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -153,7 +153,7 @@
                     <li class="sidebar-dropdown">
                         <a href="/templates/advancedset.html">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" role="img">
-                            <path d="M507.73 109.1c-2.24-9.03-13.54-12.09-20.12-5.51l-74.36 74.36-67.88-11.31-11.31-67.88 74.36-74.36c6.62-6.62 3.43-17.9-5.66-20.16-47.38-11.74-99.55.91-136.58 37.93-39.64 39.64-50.55 97.1-34.05 147.2L18.74 402.76c-24.99 24.99-24.99 65.51 0 90.5 24.99 24.99 65.51 24.99 90.5 0l213.21-213.21c50.12 16.71 107.47 5.68 147.37-34.22 37.07-37.07 49.7-89.32 37.91-136.73zM64 472c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"/>
+                                <path d="M507.73 109.1c-2.24-9.03-13.54-12.09-20.12-5.51l-74.36 74.36-67.88-11.31-11.31-67.88 74.36-74.36c6.62-6.62 3.43-17.9-5.66-20.16-47.38-11.74-99.55.91-136.58 37.93-39.64 39.64-50.55 97.1-34.05 147.2L18.74 402.76c-24.99 24.99-24.99 65.51 0 90.5 24.99 24.99 65.51 24.99 90.5 0l213.21-213.21c50.12 16.71 107.47 5.68 147.37-34.22 37.07-37.07 49.7-89.32 37.91-136.73zM64 472c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"/>
                             </svg>
 
                             <span>Advanced Settings</span>
@@ -186,52 +186,19 @@
                 </div>
             </nav>
             <!--sidebar -wrapper -->
-    
-    
-           
- </h2>
-
- <main class="page-content">
+<main class="page-content">
             <div class="container-fluid">
-                <h2>Network Settings</h2>
+                <h2>Advanced Settings</h2>
                 <hr>
                 <div id="form-response"></div>
-                <form action="/settingsNetwork" method="post">
-                    <div class="form-group">
-                        <label for="ipAddress" class="row-3"><b>IP Address (IPv4)</b></label>
-                        <div class="row-5">
-                            <input class="form-control" name="ipAddress" type="text" value="192.168.13.20" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('ipAddress','ipAddressValidate')" id="ipAddress" autocomplete="off"><span id="ipAddressValidate"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="macAddress" class="row-3"><b>MAC Address</b></label>
-                        <div class="row-5">
-                            <input class="form-control" name="macAddress" type="text" value="E4:15:F6:F4:83:87" id="macAddress" disabled="" autocomplete="off">
-                        </div>
-                    </div>                     
-                    <div class="form-group">
-                        <label for="subnetMask" class="row-3"><b>Subnet Mask</b></label>
-                        <div class="row-5">
-                            <input class="form-control" name="subnetMask" type="text" value="255.255.255.0" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('subnetMask','subnetMaskValidate')" id="subnetMask" autocomplete="off"><span id="subnetMaskValidate"></span>
-                        </div>
-                    </div> 
-                    <div class="form-group">
-                        <label for="gatewayAddress" class="row-3"><b>Gateway Address</b></label>
-                        <div class="row-5">
-                            <input class="form-control" name="gatewayAddress" type="text" value="192.168.13.1" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('gatewayAddress','gatewayAddressValidate')" id="gatewayAddress" autocomplete="off"><span id="gatewayAddressValidate"></span>
-                        </div>
-                    </div> 
-                    <div class="form-group">
-                        <label for="dnsAddress" class="row-3"><b>DNS Address</b></label>
-                        <div class="row-5">
-                            <input class="form-control" name="dnsAddress" type="text" value="10.32.12.180" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('dnsAddress','dnsAddressValidate')" id="dnsAddress" autocomplete="off"><span id="dnsAddressValidate"></span>
-                        </div>
-                    </div> 
-                    <input type="submit" id="btnSendToDevice" class="btn btn-secondary" value="Send to Device" style="float:right; margin-top: 10px; margin-bottom: 10px;">
-                </form>
+                <h4><b>Warning: Do not use if you are not authorized person.</b></h4><br>
+                <div class="button-wrapper">
+                    <button id="rebootButton" type="button" class="btn btn-danger" style="width: 200px;"><svg class="svg-inline--fa fa-power-off fa-w-16" style="float: left; padding-top: 5px;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="power-off" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M400 54.1c63 45 104 118.6 104 201.9 0 136.8-110.8 247.7-247.5 248C120 504.3 8.2 393 8 256.4 7.9 173.1 48.9 99.3 111.8 54.2c11.7-8.3 28-4.8 35 7.7L162.6 90c5.9 10.5 3.1 23.8-6.6 31-41.5 30.8-68 79.6-68 134.9-.1 92.3 74.5 168.1 168 168.1 91.6 0 168.6-74.2 168-169.1-.3-51.8-24.7-101.8-68.1-134-9.7-7.2-12.4-20.5-6.5-30.9l15.8-28.1c7-12.4 23.2-16.1 34.8-7.8zM296 264V24c0-13.3-10.7-24-24-24h-32c-13.3 0-24 10.7-24 24v240c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24z"></path></svg><!-- <i class="fas fa-power-off" style="float: left; padding-top: 5px;"></i> Font Awesome fontawesome.com --><b> Reboot Device</b></button><br><br> 
+                    <a href="/uploads/metadata.xml" target="__blank" class="btn btn-success" style="width: 200px;"><svg class="svg-inline--fa fa-download fa-w-16" style="float: left; padding-top: 5px;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="download" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"></path></svg><!-- <i class="fas fa-download" style="float: left; padding-top: 5px;"></i> Font Awesome fontawesome.com --><b> Download Metadata</b>
+                    </a>
+                </div>               
             </div>
-
-        </main>
+</main>
 
                 
 <!-- Leaflet CSS -->
