@@ -1006,3 +1006,116 @@ span[id$="Validate"] {
     max-width: none;
   }
 }
+/* MAC adresi input'u için özel stil */
+#macAddress:disabled {
+    background-color: #f0f0f0;
+    color: #888;
+    font-style: italic;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+}
+/* Genel konteyner ve arka plan */
+body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.container-fluid {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    padding: 30px;
+    margin-top: 30px;
+}
+
+/* Başlık */
+h2 {
+    font-weight: 600;
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+/* DataTable stil */
+table.dataTable {
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    font-size: 14px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.dataTable thead {
+    background-color: #4a90e2;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+table.dataTable thead th {
+    padding: 12px;
+}
+
+table.dataTable tbody td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #f1f5fb;
+    transition: 0.2s ease-in-out;
+}
+
+/* Alternatif satır renkleri */
+table.dataTable tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Filtre ve sayfa kontrol */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    margin-left: 6px;
+}
+
+/* Bilgi ve sayfalama */
+.dataTables_info {
+    font-size: 13px;
+    margin-top: 10px;
+    color: #555;
+}
+
+/* Modern butonlar */
+.btn {
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 18px;
+    transition: all 0.2s ease-in-out;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
