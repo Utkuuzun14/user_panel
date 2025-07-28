@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <title>TDG </title>
     <link rel="stylesheet" href="/static/styles.css?v=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables
     <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
     <style>
         table {
@@ -144,7 +150,7 @@
                         <div class="sidebar-submenu" style="display: block;">
                             <ul>
                                 <li>
-                                    <a href="/continuousRecords">
+                                    <a href="/templates/records/continiousrec.html">
                                         <b style="font-family: Georgia, 'Times New Roman', Times, serif;">Continuous Records</b>
                                     </a>
                                 </li>
@@ -206,49 +212,25 @@
                 </div>
             </nav>
             <!--sidebar -wrapper -->
-    
-       <main class="page-content">
-    <div class="container-fluid">
-        <h2>Continuous Records</h2>
-        <hr>
-        <div id="form-response"></div>
 
-        <div id="table_id_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-            <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_length" id="table_id_length">
-                        <label>Show 
-                            <select name="table_id_length" aria-controls="table_id" class="custom-select custom-select-sm form-control form-control-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select> entries
-                        </label>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div id="table_id_filter" class="dataTables_filter">
-                        <label>Search:
-                            <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="table_id">
-                        </label>
-                    </div>
-                </div>
-            </div>
+<main class="page-content">
+            <div class="container-fluid">
+                <h2>Continuous Records</h2>
+                <hr>
+                <div id="form-response"></div>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <table id="table_id" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="table_id_info">
+                <div id="table-container">
+                    <table id="records-table" class="table table-striped table-bordered" style="width:100%">
                         <thead>
-                            <tr role="row">
-                                <th class="sorting" tabindex="0" aria-controls="table_id" rowspan="1" colspan="1">File Name</th>
-                                <th class="sorting_desc" tabindex="0" aria-controls="table_id" rowspan="1" colspan="1" aria-sort="descending">File Date</th>
-                                <th class="sorting" tabindex="0" aria-controls="table_id" rowspan="1" colspan="1">File Size</th>
+                            <tr>
+                                <th>File Name</th>
+                                <th>File Date</th>
+                                <th>File Size</th>                               
                             </tr>
                         </thead>
                         <tbody>
                             {% for record in records %}
-                            <tr>
+                            <tr data-id="{{ record.id }}">
                                 <td>{{ record.filename }}</td>
                                 <td>{{ record.date }}</td>
                                 <td>{{ record.size }}</td>
@@ -257,40 +239,31 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                        Showing {{ records|length }} Records
-                        <span class="select-info">
-                            <span class="select-item">No Records Selected</span>
-                        </span>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="dataTables_info" id="records-table_info" role="status" aria-live="polite">
+                            Showing {{ records|length }} records
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button id="bulk-download" class="btn btn-success">
+                            <i class="fas fa-download"></i> Download 
+                        </button>
+                        <button id="bulk-delete" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                        <!-- DataTables pagination otomatik gelir -->
-                    </div>
-                </div>
             </div>
-        </div>
+        </main>
 
-        <div style="float: right; padding-top: 10px; padding-bottom: 10px;">
-            <button type="button" class="btn btn-success" id="downloadButton">
-                Download
-                <i class="fas fa-download fa-lg" style="padding-left: 5px;"></i>
-            </button>
-            <button type="button" class="btn btn-danger" id="deleteButton">
-                Delete
-                <i class="fas fa-trash fa-lg" style="padding-left: 5px;"></i>
-            </button>
-        </div>
-    </div>
-       </main>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
         
-    </body>
+    
 
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -357,6 +330,123 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+$(document).ready(function() {
+    // DataTable başlatma
+    var table = $('#records-table').DataTable({
+        // Çoklu satır seçimi özelliği
+        select: {
+            style: 'multi',  // Çoklu seçim
+            selector: 'td:not(:last-child)'  // Son sütundaki butonları seçime dahil etme
+        },
+        // Sütun ayarları
+        columnDefs: [{
+            orderable: false,  // Son sütun sıralanabilir olmasın
+            targets: -1         // Son sütunu hedefle
+        }],
+        
+    });
+
+    // Tekil indirme butonları
+    $(document).on('click', '.download-btn', function() {
+        var recordId = $(this).data('id');
+        downloadRecords([recordId]);
+    });
+
+    // Tekil silme butonları
+    $(document).on('click', '.delete-btn', function() {
+        var recordId = $(this).data('id');
+        if(confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
+            deleteRecords([recordId]);
+        }
+    });
+
+    // Toplu indirme butonu
+    $('#bulk-download').click(function() {
+        var selectedIds = getSelectedIds();
+        if(selectedIds.length === 0) {
+            alert('Lütfen en az bir kayıt seçiniz.');
+            return;
+        }
+        downloadRecords(selectedIds);
+    });
+
+    // Toplu silme butonu
+    $('#bulk-delete').click(function() {
+        var selectedIds = getSelectedIds();
+        if(selectedIds.length === 0) {
+            alert('Lütfen silmek için en az bir kayıt seçiniz.');
+            return;
+        }
+        if(confirm(selectedIds.length + ' kaydı silmek istediğinize emin misiniz?')) {
+            deleteRecords(selectedIds);
+        }
+    });
+
+    // Seçili kayıtların ID'lerini alma
+    function getSelectedIds() {
+        return table.rows({selected: true}).data().toArray().map(function(row) {
+            return $(row[3]).find('.download-btn').data('id');
+        });
+    }
+
+    // İndirme işlemi (AJAX örneği)
+    function downloadRecords(ids) {
+        $('#bulk-download').html('<i class="fas fa-spinner fa-spin"></i> İndiriliyor...');
+        
+        // Gerçek uygulamada fetch/axios kullanılacak
+        fetch('/download-records', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                alert('İndirme başladı!');
+            } else {
+                alert('Hata: ' + data.message);
+            }
+            $('#bulk-download').html('<i class="fas fa-download"></i> Seçilenleri İndir');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            $('#bulk-download').html('<i class="fas fa-download"></i> Seçilenleri İndir');
+        });
+    }
+
+    // Silme işlemi (AJAX örneği)
+    function deleteRecords(ids) {
+        $('#bulk-delete').html('<i class="fas fa-spinner fa-spin"></i> Siliniyor...');
+        
+        // Gerçek uygulamada fetch/axios kullanılacak
+        fetch('/delete-records', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                // Başarılı silme durumunda tablodan kaldır
+                table.rows({selected: true}).remove().draw();
+                alert(data.message || 'Kayıtlar başarıyla silindi.');
+            } else {
+                alert('Hata: ' + data.message);
+            }
+            $('#bulk-delete').html('<i class="fas fa-trash"></i> Seçilenleri Sil');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            $('#bulk-delete').html('<i class="fas fa-trash"></i> Seçilenleri Sil');
+        });
+    }
+});
+
 </script>
 
 
