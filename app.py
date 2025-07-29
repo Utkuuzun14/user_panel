@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify, send_file
+from flask import Flask, request, render_template, jsonify, send_file, abort
 from datetime import datetime
 import os
 import glob
@@ -6,13 +6,36 @@ import glob
 app = Flask(__name__)
 
 # KAYITLARIN TUTULACAĞI KLASÖR
-RECORDS_FOLDER = "time_records"
+RECORDS_FOLDER = os.path.join(os.path.dirname(__file__), "time_records")
 os.makedirs(RECORDS_FOLDER, exist_ok=True)
 
-# ANA SAYFA
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/trigger_settings')
+def trigger_settings():
+    # trigger_settings.html dosyan var mı? Yoksa placeholder da olabilir.
+    return render_template('settings/triggerset.html')
+
+@app.route('/network_settings')
+def network_settings():
+    return render_template('settings/networkset.html')
+
+@app.route('/record_settings')
+def record_settings():
     return render_template('settings/recordset.html')
+
+@app.route('/advanced_settings')
+def advanced_settings():
+    return render_template('settings/advancedset.html')
+
+@app.route('/trigger_records')
+def trigger_records():
+    # Burada kayıtları gösteren sayfa için işlem yapabilirsin
+    return render_template('trigger_records.html')
+
+
 
 # KAYIT BAŞLATMA
 @app.route("/start_recording", methods=["POST"])
@@ -48,7 +71,7 @@ def start_recording():
         "filename": filename
     })
 
-# KAYITLARI LİSTELEME (JSON API)
+# TXT DOSYALARINI AL (JSON API)
 @app.route("/api/records")
 def get_records():
     files = glob.glob(os.path.join(RECORDS_FOLDER, "*.txt"))
@@ -65,7 +88,40 @@ def get_records():
     
     return jsonify(records)
 
-# KAYIT İÇERİĞİNİ GÖSTERME
+# TXT DOSYALARINI HTML SAYFASINA AKTAR (YENİ!)
+@app.route("/records")
+def records_page():
+    files = glob.glob(os.path.join(RECORDS_FOLDER, "*.txt"))
+    files.sort(key=os.path.getctime, reverse=True)
+
+    records = []
+    for i, file in enumerate(files):
+        records.append({
+            "id": i,
+            "filename": os.path.basename(file),
+            "date": datetime.fromtimestamp(os.path.getctime(file)).strftime("%Y-%m-%d %H:%M:%S"),
+            "size": f"{round(os.path.getsize(file)/1024, 2)} KB"
+        })
+
+    return render_template("records/continiousrec.html", records=records)
+
+# TXT DOSYASI İÇERİĞİNİ HTML SAYFADA GÖSTER (YENİ ROUTE)
+@app.route("/record/<filename>")
+def record_content_page(filename):
+    # Dosya adı güvenlik için kontrol edilebilir
+    if ".." in filename or filename.startswith("/"):
+        abort(400, "Geçersiz dosya adı")
+
+    filepath = os.path.join(RECORDS_FOLDER, filename)
+    if not os.path.exists(filepath):
+        abort(404, "Dosya bulunamadı")
+
+    with open(filepath, 'r', encoding="utf-8") as f:
+        content = f.read()
+
+    return render_template("records/record_content.html", filename=filename, content=content)
+
+# DOSYA İÇERİĞİNİ JSON OLARAK DÖNEN API (İstersen kullanabilirsin)
 @app.route("/api/record_content")
 def get_record_content():
     filename = request.args.get("filename")
@@ -76,7 +132,7 @@ def get_record_content():
     if not os.path.exists(filepath):
         return jsonify({"error": "Dosya bulunamadı"}), 404
 
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding="utf-8") as f:
         content = f.read()
     
     return jsonify({
@@ -111,19 +167,12 @@ def delete_file():
     os.remove(filepath)
     return jsonify({"success": True})
 
-# TEST VERİSİ ÜRETİCİ
+# SAHTE VERİ ÜRETİCİ
 def get_machine_data(index):
     return f"TEST_DATA_for_index_{index}"
 
-# KAYITLAR SAYFASI
-@app.route("/records")
-def records_page():
-    return render_template("records/continiousrec.html")
+# GELİŞMİŞ AYARLAR
 
-# GELİŞMİŞ AYARLAR SAYFASI
-@app.route('/advancedsetting')
-def advancedsetting():
-    return render_template('advancedset.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
