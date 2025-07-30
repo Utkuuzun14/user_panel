@@ -28,12 +28,12 @@ def record_settings():
 
 @app.route('/advanced_settings')
 def advanced_settings():
-    return render_template('settings/advancedset.html')
+    return render_template('advancedset.html')
 
 @app.route('/trigger_records')
 def trigger_records():
     # Burada kayıtları gösteren sayfa için işlem yapabilirsin
-    return render_template('trigger_records.html')
+    return render_template('triggerrec.html')
 
 
 

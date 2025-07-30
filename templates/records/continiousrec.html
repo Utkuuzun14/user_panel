@@ -35,21 +35,12 @@
     </style>
 </head>
     <body>
-        <div class="page wrapper chiller-theme toggled">
-            <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-        <svg class="svg-inline--fa fa-bars fa-w-14"
-        aria-hidden="true"
-        focusable="false"
-        data-prefix="fas"
-        data-icon="bars"
-        role="img"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 448 512"
-        width="12.25"
-        height="14">
-        <path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"></path>
-        </svg>
+        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+            <i class="fas fa-bars"></i>
         </a>
+        <div class="page wrapper chiller-theme toggled">
+            {% include 'sidebar.html' %}
+
         
             
 
@@ -109,67 +100,63 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 
 
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const wrapper = document.querySelector(".page.wrapper"); // veya doğru seçici
-    const showSidebarBtn = document.getElementById("show-sidebar");
-    const closeSidebarBtn = document.getElementById("close-sidebar");
+  const wrapper = document.querySelector(".page-wrapper");
+  const showSidebarBtn = document.getElementById("show-sidebar");
+  const closeSidebarBtn = document.getElementById("close-sidebar");
 
-    function updateSidebarOnResize() {
-        if (window.innerWidth <= 768) {
-            wrapper.classList.add("toggled"); // Sidebar kapalı, hamburger görünür
-        } else {
-            wrapper.classList.remove("toggled"); // Sidebar açık, hamburger gizli
-        }
+  function updateSidebarOnResize() {
+    if (!wrapper) return;
+    if (window.innerWidth <= 768) {
+      wrapper.classList.add("toggled");
+    } else {
+      wrapper.classList.remove("toggled");
     }
+  }
 
-    updateSidebarOnResize(); // sayfa yüklendiğinde bir kere çalıştır
+  updateSidebarOnResize();
+  window.addEventListener("resize", updateSidebarOnResize);
 
-    window.addEventListener("resize", updateSidebarOnResize);
-
+  if (showSidebarBtn && wrapper) {
     showSidebarBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        wrapper.classList.remove("toggled");
+      e.preventDefault();
+      wrapper.classList.remove("toggled");
     });
+  }
 
-    closeSidebarBtn.addEventListener("click", function () {
-        wrapper.classList.add("toggled");
+  if (closeSidebarBtn && wrapper) {
+    closeSidebarBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      wrapper.classList.add("toggled");
     });
+  }
 
-    // Sidebar dropdown aç/kapat
-    document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
-        menu.addEventListener('click', function (e) {
-            const parent = this.parentElement;
-            const submenu = parent.querySelector('.sidebar-submenu');
-            const isActive = parent.classList.contains('active');
+  // Sidebar dropdown
+  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+    menu.addEventListener('click', function (e) {
+      const parent = this.parentElement;
+      const submenu = parent.querySelector('.sidebar-submenu');
+      if (!submenu || this.getAttribute('href') !== '#') return;
 
-            // Eğer alt menü yoksa veya href "#" değilse, engelleme!
-            if (!submenu || this.getAttribute('href') !== '#') {
-                return; // Doğrudan linke git
-            }
+      e.preventDefault();
+      const isActive = parent.classList.contains('active');
 
-            e.preventDefault();
+      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+        item.classList.remove('active');
+        const sm = item.querySelector('.sidebar-submenu');
+        if (sm) sm.style.display = 'none';
+      });
 
-            // Diğer menüleri kapat
-            document.querySelectorAll('.sidebar-dropdown').forEach(item => {
-                item.classList.remove('active');
-                const sm = item.querySelector('.sidebar-submenu');
-                if (sm) {
-                    sm.style.display = 'none';
-                }
-            });
-
-            // Bu menüyü aç
-            if (!isActive) {
-                parent.classList.add('active');
-                if (submenu) {
-                    submenu.style.display = 'block';
-                }
-            }
-        });
+      if (!isActive) {
+        parent.classList.add('active');
+        submenu.style.display = 'block';
+      }
     });
+  });
 });
+
+
 
 $(document).ready(function() {
     // DataTable başlatma

@@ -11,14 +11,16 @@
 
 </head>
 <body>
-      <div class="page wrapper  toggled">
+    
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
 
-            <a id="show-sidebar" class="btn btn-sm btn-dark" href="#" style="position: fixed; top: 15px; left: 15px; z-index: 10000;">
-                <i class="fas fa-bars"></i>
-            </a>    
 
-            {% include 'sidebar.html' %}
-            <main class="page-content">
+    <div class="page wrapper toggled">    
+
+        {% include 'sidebar.html' %}
+        <main class="page-content">
             <h2 style="text-align: center; font-family: 'Courier New', Courier, monospace">Station Informations </h2>
 
                 <hr>
@@ -116,14 +118,12 @@
                 </div>
 
 
-            </main>
-        </div>
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+        </main>
+    </div>
 
 <!-- Leaflet JS, HTML içinde yüklenmeli -->
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-<script src="/static/sidebar.js?v=1.0"></script>
+
 
 <script>
     const stationLat = 39.925533;
@@ -155,7 +155,63 @@
   setInterval(updateSystemTime, 1000);
 
 
+document.addEventListener("DOMContentLoaded", function () {
+  const wrapper = document.querySelector(".page.wrapper");
+  const showSidebarBtn = document.getElementById("show-sidebar");
+  const closeSidebarBtn = document.getElementById("close-sidebar");
+
+  function updateSidebarOnResize() {
+    if (!wrapper) return;
+    if (window.innerWidth <= 768) {
+      wrapper.classList.add("toggled");
+    } else {
+      wrapper.classList.remove("toggled");
+    }
+  }
+
+  updateSidebarOnResize();
+  window.addEventListener("resize", updateSidebarOnResize);
+
+  if (showSidebarBtn && wrapper) {
+    showSidebarBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      wrapper.classList.remove("toggled");
+    });
+  }
+
+  if (closeSidebarBtn && wrapper) {
+    closeSidebarBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      wrapper.classList.add("toggled");
+    });
+  }
+
+  // Sidebar dropdown
+  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+    menu.addEventListener('click', function (e) {
+      const parent = this.parentElement;
+      const submenu = parent.querySelector('.sidebar-submenu');
+      if (!submenu || this.getAttribute('href') !== '#') return;
+
+      e.preventDefault();
+      const isActive = parent.classList.contains('active');
+
+      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+        item.classList.remove('active');
+        const sm = item.querySelector('.sidebar-submenu');
+        if (sm) sm.style.display = 'none';
+      });
+
+      if (!isActive) {
+        parent.classList.add('active');
+        submenu.style.display = 'block';
+      }
+    });
+  });
+});
 </script>
+
+
 
 </body>
 </html>
