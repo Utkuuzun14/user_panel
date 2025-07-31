@@ -122,23 +122,23 @@ def record_content_page(filename):
     return render_template("records/record_content.html", filename=filename, content=content)
 
 # DOSYA İÇERİĞİNİ JSON OLARAK DÖNEN API (İstersen kullanabilirsin)
-@app.route("/api/record_content")
-def get_record_content():
-    filename = request.args.get("filename")
-    if not filename:
-        return jsonify({"error": "Dosya adı belirtilmeli"}), 400
+# @app.route("/api/record_content")
+# def get_record_content():
+#     filename = request.args.get("filename")
+#     if not filename:
+#         return jsonify({"error": "Dosya adı belirtilmeli"}), 400
 
-    filepath = os.path.join(RECORDS_FOLDER, filename)
-    if not os.path.exists(filepath):
-        return jsonify({"error": "Dosya bulunamadı"}), 404
+#     filepath = os.path.join(RECORDS_FOLDER, filename)
+#     if not os.path.exists(filepath):
+#         return jsonify({"error": "Dosya bulunamadı"}), 404
 
-    with open(filepath, 'r', encoding="utf-8") as f:
-        content = f.read()
+#     with open(filepath, 'r', encoding="utf-8") as f:
+#         content = f.read()
     
-    return jsonify({
-        "filename": filename,
-        "content": content
-    })
+#     return jsonify({
+#         "filename": filename,
+#         "content": content
+#     })
 
 # DOSYA İNDİRME
 @app.route("/download")

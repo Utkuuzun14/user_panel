@@ -1,5 +1,0 @@
-arraysize: 3
-
-[time_based_record_0] start: 09:00, end: 10:00, duration: 15, unit: second, data: TEST_DATA_for_index_0
-[time_based_record_1] start: 10:30, end: 11:00, duration: 15, unit: minute, data: TEST_DATA_for_index_1
-[time_based_record_2] start: 15:00, end: 16:00, duration: 30, unit: minute, data: TEST_DATA_for_index_2

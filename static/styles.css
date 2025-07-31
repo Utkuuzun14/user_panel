@@ -567,13 +567,7 @@ body {
   border: 1px solid #ddd;
   background-color: #ffffff;
 }
-.container-fluid {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
+
 /* Genel form yapısı */
 form {
   background-color: #f8f9fa; /* Açık gri arka plan */
@@ -742,113 +736,98 @@ span[id$="Validate"] {
     padding-right: 5px;
     padding-left: 5px;
 }
-/* ================================
-   RECORD TABLE – MASAÜSTÜ (Varsayılan)
-   ================================ */
+/* ===========================
+   RECORD TABLE – GENEL
+=========================== */
 .record-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.95rem;
+  margin-bottom: 30px;
 }
 
-/* Scrollable için ekleme */
+/* Başlık satırı */
 .record-table thead {
-  background-color: #343a40;
+  background-color: #2f3e4d;
   color: #fff;
-  display: table;
-  width: 100%;
-  table-layout: fixed;
 }
 
+.record-table th,
+.record-table td {
+  padding: 16px 20px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+/* Hover efekti */
+.record-table tbody tr:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Alternatif satır rengi */
+.record-table tbody tr:nth-child(even) {
+  background-color: #f4f6f8;
+}
+
+/* Mobil scroll (maksimum 200px yükseklik) */
 .record-table tbody {
   display: block;
-  max-height: 180px; /* yaklaşık 3 satır */
+  max-height: 200px;
   overflow-y: auto;
-  width: 100%;
 }
 
+.record-table thead,
 .record-table tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
 }
 
-.record-table th,
-.record-table td {
-  padding: 14px 20px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-  vertical-align: middle;
-}
-
-/* Alternatif satır arkaplanı */
-.record-table tbody tr:nth-child(even) {
-  background-color: #f1f1f1;
-}
-
-/* Opsiyonel: çok satır olursa dikey scroll isteyenler için modifier class */
-.record-table--scroll thead,
-.record-table--scroll tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.record-table--scroll tbody {
-  display: block;
-  max-height: 180px;      /* ihtiyaca göre değiştir */
-  overflow-y: auto;
-  width: 100%;
-}
-
-/* ================================
-   RECORD TABLE – MOBİL (<=768px)
-   Kart/Stack görünüm
-   ================================ */
+/* ===========================
+   RESPONSIVE – MOBİL KART GÖRÜNÜM
+=========================== */
 @media (max-width: 768px) {
-
-  /* Masaüstü tablo davranışlarını kapat */
-  .record-table,
-  .record-table thead,
-  .record-table tbody,
-  .record-table th,
-  .record-table td,
-  .record-table tr {
+  .records-table,
+  .records-table thead,
+  .records-table tbody,
+  .recorsd-table th,
+  .records-table td,
+  .records-table tr {
     display: block;
     width: 100%;
   }
 
-  /* Scroll ve max-height mobilde iptal */
-  .record-table tbody {
-    max-height: none;
-    overflow-y: visible;
-  }
-
-  /* Başlık satırını gizle (etiketleri biz vereceğiz) */
   .record-table thead {
     display: none;
   }
 
-  /* Satır kart gibi */
+  .record-table tbody {
+    max-height: none;
+    overflow: visible;
+  }
+
   .record-table tr {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
-    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   }
 
   .record-table td {
-    padding: 8px 10px;
+    padding: 10px 10px 10px 45%;
+    position: relative;
     text-align: left;
     border: none;
     border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 45%;      /* solda etiket için yer */
     white-space: normal;
   }
 
@@ -856,40 +835,36 @@ span[id$="Validate"] {
     border-bottom: none;
   }
 
-  /* Varsayılan before stili */
+  /* Sütun isimleri */
   .record-table td::before {
+    content: "";
     position: absolute;
+    top: 10px;
     left: 10px;
-    top: 8px;
-    width: 40%;
-    font-weight: bold;
-    color: #333;
+    font-weight: 600;
+    color: #555;
+    width: 35%;
     white-space: nowrap;
-    content: ""; /* içerikleri nth-child ile dolduruyoruz */
   }
 
-  /* Sütun etiketleri (HTML'e dokunmadan) */
-  .record-table td:nth-child(1)::before { content: "Aktif"; }
-  .record-table td:nth-child(2)::before { content: "Başlangıç Saati"; }
-  .record-table td:nth-child(3)::before { content: "Bitiş Saati"; }
-  .record-table td:nth-child(4)::before { content: "Kayıt Sıklığı"; }
-  .record-table td:nth-child(5)::before { content: "Zaman Birimi"; }
+  /* Sıralama (sütun başlıkları mobilde) – ihtiyacına göre */
+  .record-table td:nth-child(1)::before { content: "Dosya Adı"; }
+  .record-table td:nth-child(2)::before { content: "Tarih"; }
+  .record-table td:nth-child(3)::before { content: "Boyut"; }
 }
 
-/* Daha ufak ekran mikro ayar (isteğe bağlı) */
-@media (max-width: 480px) {
-  .record-table td {
-    padding-left: 52%;
-  }
-  .record-table td::before {
-    width: 48%;
-    font-size: 13px;
-  }
-  /* İstersen daha kısa label kullan:
-  .record-table td:nth-child(2)::before { content: "Başl."; }
-  .record-table td:nth-child(3)::before { content: "Bitiş"; }
-  */
+/* ===========================
+   DETAY: Dikey scroll için scrollbar stili
+=========================== */
+.record-table tbody::-webkit-scrollbar {
+  width: 8px;
 }
+
+.record-table tbody::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
 /* Advanced Settings başlığı altındaki hr */
 .page-content h2 + hr {
   border: 1.5px solid #ccc;
@@ -899,8 +874,9 @@ span[id$="Validate"] {
 
 /* Sayfa içeriği genel padding */
 .page-content > div {
-  padding-top: 0;
-  margin: 0 40px 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
@@ -979,6 +955,17 @@ span[id$="Validate"] {
   box-shadow: 0 5px 15px rgba(21, 87, 36, 0.5);
 }
 
+.page-content {
+  margin-left: 270px; /* Sidebar açıkken */
+  margin-right: 20px;
+  transition: margin 0.3s ease;
+}
+
+.page-wrapper.toggled .page-content {
+  margin-left: 10px; /* Sidebar kapalıyken */
+  margin-right: 10px;
+}
+
 /* Mobil uyum */
 @media (max-width: 480px) {
   .page-content h2 + hr {
@@ -1024,11 +1011,18 @@ body {
 .container-fluid {
     background-color: #ffffff;
     border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
     padding: 30px;
     margin-top: 30px;
-
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: 270px;
+    
 }
+
 
 /* Başlık */
 h2 {
@@ -1120,3 +1114,53 @@ table.dataTable tbody tr:nth-child(even) {
 .btn-danger:hover {
     background-color: #c0392b;
 }
+/* DataTables info ve length/search alanlarını yan yana */
+    .dataTables_wrapper .row {
+      margin-bottom: 10px;
+    }
+
+    /* Özelleştirilmiş search kutusu */
+    .dataTables_filter input {
+      border-radius: 20px;
+      border: 1px solid #ced4da;
+      padding: 6px 15px;
+      width: 250px;
+      transition: all 0.3s ease;
+    }
+    .dataTables_filter input:focus {
+      outline: none;
+      border-color: #80bdff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    }
+
+    /* Özelleştirilmiş kayıt sayısı select kutusu */
+    .dataTables_length select {
+      border-radius: 20px;
+      border: 1px solid #ced4da;
+      padding: 6px 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dataTables_length select:focus {
+      outline: none;
+      border-color: #80bdff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    }
+
+    /* Butonlar */
+    #bulk-download,
+    #bulk-delete {
+      border-radius: 30px;
+      padding: 8px 22px;
+      font-weight: 600;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.12);
+      transition: background-color 0.3s ease;
+    }
+    #bulk-download:hover {
+      background-color: #218838;
+      color: #fff;
+    }
+    #bulk-delete:hover {
+      background-color: #c82333;
+      color: #fff;
+    }
