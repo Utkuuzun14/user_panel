@@ -1043,8 +1043,8 @@ table.dataTable {
 }
 
 table.dataTable thead {
-    background-color: #4a90e2;
-    color: #fff;
+    background-color: #e0f2fe;
+    color: #0369a1;
     font-weight: bold;
     text-align: center;
 }
@@ -1074,7 +1074,7 @@ table.dataTable tbody tr:nth-child(even) {
 .dataTables_wrapper .dataTables_length select {
     border-radius: 8px;
     border: 1px solid #ccc;
-    padding: 6px 10px;
+    padding: .375rem 1.75rem .375 .75rem;
     margin-left: 6px;
 }
 
@@ -1164,3 +1164,8 @@ table.dataTable tbody tr:nth-child(even) {
       background-color: #c82333;
       color: #fff;
     }
+    .file-date-cell {
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+

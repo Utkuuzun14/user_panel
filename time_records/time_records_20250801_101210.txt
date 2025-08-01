@@ -1,0 +1,2 @@
+arraysize: 1
+[time_based_record_0] start: 09:00, end: 10:00, duration: 15, unit: minute, data: TEST_DATA_for_index_0

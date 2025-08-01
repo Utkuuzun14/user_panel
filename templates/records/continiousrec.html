@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"  crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css"/>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
+    
+    
+
     
     <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
     
@@ -23,8 +28,6 @@
             {% include 'sidebar.html' %}
 
         
-            
-
 <main class="page-content">
             <div class="container-fluid">
                 <h2>Continuous Records</h2>
@@ -44,7 +47,7 @@
                             {% for record in records %}
                             <tr data-id="{{ record.id }}">
                                 <td data-label="File Name">{{ record.filename }}</td>
-                                <td data-label="File Date">{{ record.date }}</td>
+                                <td data-label="File Date" class="file-date-cell" data-date="{{ record.date }}">{{ record.date }}</td>
                                 <td data-label="File Size">{{ record.size }}</td>
                             </tr>
                             {% endfor %}
@@ -70,6 +73,7 @@
             </div>
         </main>
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
@@ -82,6 +86,7 @@
   <!-- DataTables Responsive JS -->
   <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
 
 <script>
@@ -106,7 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
     showSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.remove("toggled");
-
       showSidebarBtn.style.display = 'none';
     });
   }
@@ -115,9 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.add("toggled");
-
-      if(showSidebarBtn)
-      {
+      if (showSidebarBtn) {
         showSidebarBtn.style.display = 'block';
       }
     });
@@ -145,127 +147,47 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  // File date hücrelerine ikon ve renk ekleme
+  document.querySelectorAll(".file-date-cell").forEach(cell => {
+    const dateStr = cell.dataset.date;
+    const status = getDateStatusIcon(dateStr);
+    cell.innerHTML = `${status.icon} ${dateStr}`;
+    cell.style.backgroundColor = status.color;
+    cell.style.color = status.textColor;
+    cell.style.fontWeight = "500";
+    cell.style.borderRadius = "4px";
+  });
 });
 
-
-
-$(document).ready(function() {
-    // DataTable başlatma
-    var table = $('#records-table').DataTable({
-        // Çoklu satır seçimi özelliği
-        select: {
-            style: 'multi',  // Çoklu seçim
-            selector: 'td:not(:last-child)'  // Son sütundaki butonları seçime dahil etme
-        },
-        // Sütun ayarları
-        columnDefs: [{
-            orderable: false,  // Son sütun sıralanabilir olmasın
-            targets: -1         // Son sütunu hedefle
-        }],
-        
-    });
-
-    // Tekil indirme butonları
-    $(document).on('click', '.download-btn', function() {
-        var recordId = $(this).data('id');
-        downloadRecords([recordId]);
-    });
-
-    // Tekil silme butonları
-    $(document).on('click', '.delete-btn', function() {
-        var recordId = $(this).data('id');
-        if(confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
-            deleteRecords([recordId]);
-        }
-    });
-
-    // Toplu indirme butonu
-    $('#bulk-download').click(function() {
-        var selectedIds = getSelectedIds();
-        if(selectedIds.length === 0) {
-            alert('Lütfen en az bir kayıt seçiniz.');
-            return;
-        }
-        downloadRecords(selectedIds);
-    });
-
-    // Toplu silme butonu
-    $('#bulk-delete').click(function() {
-        var selectedIds = getSelectedIds();
-        if(selectedIds.length === 0) {
-            alert('Lütfen silmek için en az bir kayıt seçiniz.');
-            return;
-        }
-        if(confirm(selectedIds.length + ' kaydı silmek istediğinize emin misiniz?')) {
-            deleteRecords(selectedIds);
-        }
-    });
-
-    // Seçili kayıtların ID'lerini alma
-    function getSelectedIds() {
-        return table.rows({selected: true}).data().toArray().map(function(row) {
-            return $(row[3]).find('.download-btn').data('id');
-        });
-    }
-
-    // İndirme işlemi (AJAX örneği)
-    function downloadRecords(ids) {
-        $('#bulk-download').html('<i class="fas fa-spinner fa-spin"></i> İndiriliyor...');
-        
-        // Gerçek uygulamada fetch/axios kullanılacak
-        fetch('/download-records', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ids: ids })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                alert('İndirme başladı!');
-            } else {
-                alert('Hata: ' + data.message);
-            }
-            $('#bulk-download').html('<i class="fas fa-download"></i> Seçilenleri İndir');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            $('#bulk-download').html('<i class="fas fa-download"></i> Seçilenleri İndir');
-        });
-    }
-
-    // Silme işlemi (AJAX örneği)
-    function deleteRecords(ids) {
-        $('#bulk-delete').html('<i class="fas fa-spinner fa-spin"></i> Siliniyor...');
-        
-        // Gerçek uygulamada fetch/axios kullanılacak
-        fetch('/delete-records', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ids: ids })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                // Başarılı silme durumunda tablodan kaldır
-                table.rows({selected: true}).remove().draw();
-                alert(data.message || 'Kayıtlar başarıyla silindi.');
-            } else {
-                alert('Hata: ' + data.message);
-            }
-            $('#bulk-delete').html('<i class="fas fa-trash"></i> Seçilenleri Sil');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            $('#bulk-delete').html('<i class="fas fa-trash"></i> Seçilenleri Sil');
-        });
-    }
+$(document).ready(function () {
+  // DataTable başlatma
+  var table = $('#records-table').DataTable({
+    select: {
+      style: 'multi',
+      selector: 'td'
+    },
+    columnDefs: [{
+      targets: -1,
+      orderable: false
+    }]
+  });
 });
+
+// Tarihe göre ikon ve renk belirleme
+function getDateStatusIcon(dateStr) {
+  const fileDate = new Date(dateStr);
+  const now = new Date();
+  const diffDays = Math.floor((now - fileDate) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return { icon: "🟢", color: "#dcfce7", textColor: "#16a34a" };
+  if (diffDays <= 7) return { icon: "🟡", color: "#fef9c3", textColor: "#ca8a04" };
+  if (diffDays <= 30) return { icon: "🟠", color: "#fde68a", textColor: "#f59e0b" };
+  return { icon: "🔴", color: "#fee2e2", textColor: "#dc2626" };
+}
 
 </script>
+
 
 
 

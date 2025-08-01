@@ -2,6 +2,8 @@ from flask import Flask, request, render_template, jsonify, send_file, abort
 from datetime import datetime
 import os
 import glob
+from io import BytesIO
+from zipfile import ZipFile
 
 app = Flask(__name__)
 
@@ -171,8 +173,37 @@ def delete_file():
 def get_machine_data(index):
     return f"TEST_DATA_for_index_{index}"
 
-# GELİŞMİŞ AYARLAR
+#Dosya İndirme
+@app.route('/download-records', methods=['POST'])
+def download_records():
+    data = request.get_json()
+    ids = data.get("ids", [])
 
+    # time_records klasöründen tüm txt dosyalarını sırayla al
+    all_files = sorted(
+        [f for f in os.listdir(RECORDS_DIR) if f.endswith(".txt")]
+    )
 
-if __name__ == "__main__":
+    # ID'ler sırasına göre eşleştir (1-based index)
+    selected_files = [
+        os.path.join(RECORDS_DIR, all_files[int(id)-1])
+        for id in ids if int(id)-1 < len(all_files)
+    ]
+
+    if not selected_files:
+        return "Dosya bulunamadı", 404
+
+    if len(selected_files) == 1:
+        return send_file(selected_files[0], as_attachment=True)
+
+    # Çoklu dosya: ziple
+    zip_buffer = BytesIO()
+    with ZipFile(zip_buffer, "w") as zipf:
+        for file_path in selected_files:
+            zipf.write(file_path, arcname=os.path.basename(file_path))
+    zip_buffer.seek(0)
+
+    return send_file(zip_buffer, as_attachment=True, download_name="kayitlar.zip")
+
+if __name__ == "__main__":  
     app.run(debug=True)
