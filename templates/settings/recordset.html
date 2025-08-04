@@ -293,6 +293,16 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       wrapper.classList.remove("toggled");
     }
+    updateShowSidebarButton();
+  }
+
+  function updateShowSidebarButton() {
+    if (!wrapper || !showSidebarBtn) return;
+    if (wrapper.classList.contains("toggled")) {
+      showSidebarBtn.style.display = "block";
+    } else {
+      showSidebarBtn.style.display = "none";
+    }
   }
 
   updateSidebarOnResize();
@@ -302,8 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.remove("toggled");
-
-      showSidebarBtn.style.display = 'none';
+      updateShowSidebarButton();
     });
   }
 
@@ -311,11 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.add("toggled");
-
-      if(showSidebarBtn)
-      {
-        showSidebarBtn.style.display = 'block';
-      }
+      updateShowSidebarButton();
     });
   }
 
@@ -342,7 +347,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const checkboxes = document.querySelectorAll('input[type="checkbox"][name="active[]"]');

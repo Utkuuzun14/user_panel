@@ -47,7 +47,7 @@
                             {% for record in records %}
                             <tr data-id="{{ record.id }}">
                                 <td data-label="File Name">{{ record.filename }}</td>
-                                <td data-label="File Date" class="file-date-cell" data-date="{{ record.date }}">{{ record.date }}</td>
+                                <td data-label="File Date">{{ record.date }}</td>
                                 <td data-label="File Size">{{ record.size }}</td>
                             </tr>
                             {% endfor %}
@@ -90,6 +90,7 @@
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
   const wrapper = document.querySelector(".page.wrapper");
   const showSidebarBtn = document.getElementById("show-sidebar");
@@ -102,6 +103,16 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       wrapper.classList.remove("toggled");
     }
+    updateShowSidebarButton();
+  }
+
+  function updateShowSidebarButton() {
+    if (!wrapper || !showSidebarBtn) return;
+    if (wrapper.classList.contains("toggled")) {
+      showSidebarBtn.style.display = "block";
+    } else {
+      showSidebarBtn.style.display = "none";
+    }
   }
 
   updateSidebarOnResize();
@@ -111,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.remove("toggled");
-      showSidebarBtn.style.display = 'none';
+      updateShowSidebarButton();
     });
   }
 
@@ -119,9 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.add("toggled");
-      if (showSidebarBtn) {
-        showSidebarBtn.style.display = 'block';
-      }
+      updateShowSidebarButton();
     });
   }
 
@@ -147,17 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // File date hücrelerine ikon ve renk ekleme
-  document.querySelectorAll(".file-date-cell").forEach(cell => {
-    const dateStr = cell.dataset.date;
-    const status = getDateStatusIcon(dateStr);
-    cell.innerHTML = `${status.icon} ${dateStr}`;
-    cell.style.backgroundColor = status.color;
-    cell.style.color = status.textColor;
-    cell.style.fontWeight = "500";
-    cell.style.borderRadius = "4px";
-  });
 });
 
 $(document).ready(function () {
@@ -173,18 +171,6 @@ $(document).ready(function () {
     }]
   });
 });
-
-// Tarihe göre ikon ve renk belirleme
-function getDateStatusIcon(dateStr) {
-  const fileDate = new Date(dateStr);
-  const now = new Date();
-  const diffDays = Math.floor((now - fileDate) / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return { icon: "🟢", color: "#dcfce7", textColor: "#16a34a" };
-  if (diffDays <= 7) return { icon: "🟡", color: "#fef9c3", textColor: "#ca8a04" };
-  if (diffDays <= 30) return { icon: "🟠", color: "#fde68a", textColor: "#f59e0b" };
-  return { icon: "🔴", color: "#fee2e2", textColor: "#dc2626" };
-}
 
 </script>
 

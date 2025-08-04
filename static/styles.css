@@ -32,6 +32,17 @@ body {
   word-wrap: break-word;
   box-sizing: border-box;
 }
+@media (max-width: 768px) {
+  .card-deck {
+    display: flex;
+    flex-direction: column; /* Kartları alt alta diz */
+  }
+
+  .card-deck .card {
+    width: 100%;            /* Kart genişliği tam */
+    margin-bottom: 15px;    /* Kartlar arası boşluk */
+  }
+}
 
 
 
@@ -91,6 +102,7 @@ body {
 
 .page.wrapper.toggled main.page-content {
   margin-left: 0;
+  display: block;
 }
 
 /* Logo ve kapatma butonu */
@@ -298,7 +310,7 @@ body {
 
 .sidebar-submenu ul li::before {
   content: "▸";           /* Ok işareti simgesi */
-  color: teal;            /* İstediğin renk */
+  color: rgb(0, 138, 138);            /* İstediğin renk */
   position: absolute;
   left: 0;
   top: 50%;
@@ -326,40 +338,7 @@ body {
   color: #faeee7;
   border-left: 4px solid teal;
 }
-.mini-sidebar-menu {
-  display: none;
-  position: absolute;
-  background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-  border-radius: 6px;
-  padding: 10px;
-  top: 40px; /* hamburger ikonunun hemen altı */
-  left: 10px;
-  z-index: 999;
-  flex-direction: column;
-  gap: 8px;
-  animation: fadeIn 0.3s ease-in-out;
-}
 
-#show-sidebar:hover .mini-sidebar-menu {
-  display: flex;
-}
-
-.mini-sidebar-menu a {
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: #f0f0f0;
-  border-radius: 50%;
-  transition: background 0.3s;
-}
-
-.mini-sidebar-menu a:hover {
-  background: #ddd;
-}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
@@ -378,6 +357,7 @@ body {
     padding: 8px 10px;
     border-radius: 4px;
     cursor: pointer;
+    display: block;
 }
 
 /* Çarpı başlangıçta görünür */
@@ -404,20 +384,13 @@ body {
         transform: translateX(-260px); /* sidebar gizli */
     }
 
-    /* Sidebar kapalı ise üç çizgi görünür */
-    .page.wrapper.toggled #show-sidebar {
-        display: block;
-    }
 
     /* Sidebar kapalı ise çarpı gizli */
     .page.wrapper.toggled #close-sidebar {
         display: none;
     }
 
-    /* Sidebar açık ise üç çizgi gizli */
-    .page.wrapper:not(.toggled) #show-sidebar {
-        display: none;
-    }
+
 
     /* Sidebar açık ise çarpı görünür */
     .page.wrapper:not(.toggled) #close-sidebar {
@@ -597,7 +570,7 @@ hr {
 .form-group {
   display: flex;
   align-items: stretch;
-  margin-bottom: 18px;
+  margin-bottom: 1.25rem;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(39,54,74,0.06);
@@ -722,7 +695,10 @@ span[id$="Validate"] {
     position: relative;
     display: block;
     padding-left: 1.25rem;
+    margin-top: 0.5rem;
+    gap: 0.5rem;
 }
+
 .col-4 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 33.333333%;
@@ -789,41 +765,33 @@ span[id$="Validate"] {
   width: 100%;
   table-layout: fixed;
 }
-
-/* ===========================
-   RESPONSIVE – MOBİL KART GÖRÜNÜM
-=========================== */
 @media (max-width: 768px) {
-  .records-table,
-  .records-table thead,
-  .records-table tbody,
-  .recorsd-table th,
-  .records-table td,
-  .records-table tr {
+  #records-table,
+  #records-table thead,
+  #records-table tbody,
+  #records-table th,
+  #records-table td,
+  #records-table tr {
     display: block;
     width: 100%;
   }
 
-  .record-table thead {
+  /* Başlıkları gizle */
+  #records-table thead {
     display: none;
   }
 
-  .record-table tbody {
-    max-height: none;
-    overflow: visible;
-  }
-
-  .record-table tr {
-    margin-bottom: 16px;
-    background: #fff;
+  #records-table tr {
+    margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    background-color: #fff;
   }
 
-  .record-table td {
-    padding: 10px 10px 10px 45%;
+  #records-table td {
+    padding-left: 50%;
     position: relative;
     text-align: left;
     border: none;
@@ -831,27 +799,29 @@ span[id$="Validate"] {
     white-space: normal;
   }
 
-  .record-table td:last-child {
+  #records-table td:last-child {
     border-bottom: none;
   }
 
-  /* Sütun isimleri */
-  .record-table td::before {
-    content: "";
+  /* Hücrelerin label'ı */
+  #records-table td::before {
+    content: attr(data-label);
     position: absolute;
-    top: 10px;
-    left: 10px;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     font-weight: 600;
     color: #555;
-    width: 35%;
+    width: 45%;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-
-  /* Sıralama (sütun başlıkları mobilde) – ihtiyacına göre */
-  .record-table td:nth-child(1)::before { content: "Dosya Adı"; }
-  .record-table td:nth-child(2)::before { content: "Tarih"; }
-  .record-table td:nth-child(3)::before { content: "Boyut"; }
 }
+
+/* ===========================
+   RESPONSIVE – MOBİL KART GÖRÜNÜM
+=========================== */
 
 /* ===========================
    DETAY: Dikey scroll için scrollbar stili
@@ -959,6 +929,7 @@ span[id$="Validate"] {
   margin-left: 270px; /* Sidebar açıkken */
   margin-right: 20px;
   transition: margin 0.3s ease;
+  
 }
 
 .page-wrapper.toggled .page-content {
@@ -1013,7 +984,7 @@ body {
     border-radius: 16px;
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-    padding: 30px;
+    padding: 1rem;
     margin-top: 30px;
     width: 100%;
     padding-right: 15px;
@@ -1168,4 +1139,12 @@ table.dataTable tbody tr:nth-child(even) {
   transition: background-color 0.3s ease;
   font-size: 14px;
 }
+@media (max-width: 767.98px) {
+    .button-wrapper {
+      flex-direction: column;
+    }
 
+    .button-wrapper > * {
+      max-width: 100%;
+    }
+  }

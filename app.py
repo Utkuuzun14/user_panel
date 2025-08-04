@@ -32,10 +32,13 @@ def record_settings():
 def advanced_settings():
     return render_template('advancedset.html')
 
-@app.route('/trigger_records')
-def trigger_records():
-    # Burada kayıtları gösteren sayfa için işlem yapabilirsin
-    return render_template('triggerrec.html')
+@app.route('/real-time-row')
+def real_time_row():
+    return render_template('realtimedata/rowdata.html')
+
+@app.route('/real-time-frequency')
+def real_time_frequency():
+    return render_template('realtimedata/frequency.html')
 
 
 
@@ -106,6 +109,28 @@ def records_page():
         })
 
     return render_template("records/continiousrec.html", records=records)
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+@app.route("/trigger-records")
+def trigger_records():
+    # trigger_records klasörü içindeki tüm .txt dosyalarını bul
+    trigger_folder = os.path.join(BASE_DIR, "trigger_records")
+    files = glob.glob(os.path.join(trigger_folder, "*.txt"))
+    files.sort(key=os.path.getctime, reverse=True)
+
+    records = []
+    for i, file in enumerate(files):
+        records.append({
+            "id": i,
+            "filename": os.path.basename(file),
+            "date": datetime.fromtimestamp(os.path.getctime(file)).strftime("%Y-%m-%d %H:%M:%S"),
+            "size": f"{round(os.path.getsize(file)/1024, 2)} KB"
+        })
+
+    # triggerrec.html dosyası templates/records/ altında
+    return render_template("records/triggerrec.html", records=records)
+
 
 # TXT DOSYASI İÇERİĞİNİ HTML SAYFADA GÖSTER (YENİ ROUTE)
 @app.route("/record/<filename>")

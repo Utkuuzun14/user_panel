@@ -13,11 +13,9 @@
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
-        <div class="page wrapper chiller-theme toggled">
+        <div class="page wrapper  toggled">
             {% include 'sidebar.html' %}
-
-
- <main class="page-content">
+          <main class="page-content">
             <div class="container-fluid">
                 <h2>Network Settings</h2>
                 <hr>
@@ -57,7 +55,7 @@
                 </form>
             </div>
 
-        </main>
+          </main>
 
                 
 <!-- Leaflet CSS -->
@@ -67,6 +65,7 @@
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
   const wrapper = document.querySelector(".page.wrapper");
   const showSidebarBtn = document.getElementById("show-sidebar");
@@ -79,6 +78,16 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       wrapper.classList.remove("toggled");
     }
+    updateShowSidebarButton();
+  }
+
+  function updateShowSidebarButton() {
+    if (!wrapper || !showSidebarBtn) return;
+    if (wrapper.classList.contains("toggled")) {
+      showSidebarBtn.style.display = "block";
+    } else {
+      showSidebarBtn.style.display = "none";
+    }
   }
 
   updateSidebarOnResize();
@@ -88,8 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.remove("toggled");
-
-      showSidebarBtn.style.display = 'none';
+      updateShowSidebarButton();
     });
   }
 
@@ -97,11 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSidebarBtn.addEventListener("click", function (e) {
       e.preventDefault();
       wrapper.classList.add("toggled");
-
-      if(showSidebarBtn)
-      {
-        showSidebarBtn.style.display = 'block';
-      }
+      updateShowSidebarButton();
     });
   }
 
