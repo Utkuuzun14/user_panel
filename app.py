@@ -1,9 +1,14 @@
-from flask import Flask, request, render_template, jsonify, send_file, abort
+from flask import Flask, request, render_template, jsonify, send_file, abort, json
 from datetime import datetime
-import os
+import matplotlib as plt
+import numpy as np
 import glob
 from io import BytesIO
 from zipfile import ZipFile
+import os
+import plotly
+import plotly.graph_objs as go
+
 
 app = Flask(__name__)
 
@@ -206,7 +211,7 @@ def download_records():
 
     # time_records klasöründen tüm txt dosyalarını sırayla al
     all_files = sorted(
-        [f for f in os.listdir(RECORDS_DIR) if f.endswith(".txt")]
+        [f for f in os.listdir(time_records_dir) if f.endswith(".txt")]
     )
 
     # ID'ler sırasına göre eşleştir (1-based index)
@@ -216,7 +221,7 @@ def download_records():
     ]
 
     if not selected_files:
-        return "Dosya bulunamadı", 404
+        return "Dosya bulunamadi", 404
 
     if len(selected_files) == 1:
         return send_file(selected_files[0], as_attachment=True)
@@ -230,5 +235,39 @@ def download_records():
 
     return send_file(zip_buffer, as_attachment=True, download_name="kayitlar.zip")
 
+@app.route('/rowdata')
+def rowdata():
+    return render_template('realtimedata/rowdata.html')
+
+@app.route('/rowdata/data')
+def rowdata_data():
+    json_path = os.path.join('data', 'veri.json')
+    with open(json_path, 'r', encoding='utf-8') as f:
+        raw = json.load(f)
+    
+    sensor_list = raw.get("sensor", [])
+
+    traces = []
+
+    for axis in sensor_list:
+        name = axis.get("name")
+        waveform = axis.get("waveform", {})
+        y_data = waveform.get("wf_values", [])
+        dt = waveform.get("dt", 1)
+        
+        # X ekseni için zaman hesapla
+        x_data = [i * dt for i in range(len(y_data))]
+
+        trace = {
+            'x': x_data,
+            'y': y_data,
+            'type': 'scatter',
+            'mode': 'lines',
+            'name': name
+        }
+
+        traces.append(trace)
+
+    return jsonify(traces)
 if __name__ == "__main__":  
     app.run(debug=True)

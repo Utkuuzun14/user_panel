@@ -1,113 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <title>TDG </title>
+    <title>TDG</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/png;base64,...==" type="image/x-icon">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="/static/styles.css?v=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-    <body>
-        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
-        </a>
-        <div class="page wrapper chiller-theme toggled">
+<body>
 
-            <!--Sidebar-->
-            {% include 'sidebar.html' %}
-           
-           
-        <main class="page-content">
-            <div class="container-fuild">
-                <h2>Statino Real Time Data</h2>
-                <hr>
-                <div class="realtime">
-                    
-                </div>
-            </div>
-        </main>
-                
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-<!--Sidebar JS-->
+    <!-- Sidebar Toggle Button -->
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#"><i class="fas fa-bars"></i></a>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const wrapper = document.querySelector(".page.wrapper");
-  const showSidebarBtn = document.getElementById("show-sidebar");
-  const closeSidebarBtn = document.getElementById("close-sidebar");
+    <div class="page wrapper chiller-theme toggled">
+        <!-- Sidebar -->
+        {% include 'sidebar.html' %}
 
-  function updateSidebarOnResize() {
-    if (!wrapper) return;
-    if (window.innerWidth <= 768) {
-      wrapper.classList.add("toggled");
-    } else {
-      wrapper.classList.remove("toggled");
-    }
-    updateShowSidebarButton();
-  }
+        <!-- Main Content -->
+        <div class="container" style="padding: 20px;">
+            <h2>Seismograph Data</h2>
+            <div id="plot-bod-x" style="height: 300px;"></div>
+            <div id="plot-bod-y" style="height: 300px;"></div>
+            <div id="plot-bod-z" style="height: 300px;"></div>
+        </div>
+    </div>
 
-  function updateShowSidebarButton() {
-    if (!wrapper || !showSidebarBtn) return;
-    if (wrapper.classList.contains("toggled")) {
-      showSidebarBtn.style.display = "block";
-    } else {
-      showSidebarBtn.style.display = "none";
-    }
-  }
+    <!-- JS: Seismograph Graphs -->
+    <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const response = await fetch('/static/ivme.json');
+            const data = await response.json();
 
-  updateSidebarOnResize();
-  window.addEventListener("resize", updateSidebarOnResize);
+            function plotWaveform(sensorName, elementId) {
+                const sensor = data.sensor.find(s => s.name === sensorName);
+                if (!sensor) return;
 
-  if (showSidebarBtn && wrapper) {
-    showSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.remove("toggled");
-      updateShowSidebarButton();
+                const wf = sensor.waveform;
+                const dt = wf.dt;
+                const values = wf.wf_values;
+                const timestamps = values.map((_, i) => i * dt);
+
+                Plotly.newPlot(elementId, [{
+                    x: timestamps,
+                    y: values,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: sensorName
+                }], {
+                    margin: { t: 30 },
+                    title: sensorName + ' (' + sensor.unit + ')',
+                    xaxis: { title: 'Time (s)' },
+                    yaxis: { title: sensor.unit },
+                    responsive: true
+                }, { responsive: true });
+            }
+
+            plotWaveform("Bod_X", "plot-bod-x");
+            plotWaveform("Bod_Y", "plot-bod-y");
+            plotWaveform("Bod_Z", "plot-bod-z");
+
+        } catch (err) {
+            console.error('Veri yüklenemedi:', err);
+        }
     });
-  }
+    </script>
 
-  if (closeSidebarBtn && wrapper) {
-    closeSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.add("toggled");
-      updateShowSidebarButton();
+    <!-- JS: Sidebar Behavior -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const wrapper = document.querySelector(".page.wrapper");
+        const showSidebarBtn = document.getElementById("show-sidebar");
+        const closeSidebarBtn = document.getElementById("close-sidebar");
+
+        function updateSidebarOnResize() {
+            if (!wrapper) return;
+            if (window.innerWidth <= 768) {
+                wrapper.classList.add("toggled");
+            } else {
+                wrapper.classList.remove("toggled");
+            }
+            updateShowSidebarButton();
+        }
+
+        function updateShowSidebarButton() {
+            if (!wrapper || !showSidebarBtn) return;
+            showSidebarBtn.style.display = wrapper.classList.contains("toggled") ? "block" : "none";
+        }
+
+        updateSidebarOnResize();
+        window.addEventListener("resize", updateSidebarOnResize);
+
+        if (showSidebarBtn && wrapper) {
+            showSidebarBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                wrapper.classList.remove("toggled");
+                updateShowSidebarButton();
+            });
+        }
+
+        if (closeSidebarBtn && wrapper) {
+            closeSidebarBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                wrapper.classList.add("toggled");
+                updateShowSidebarButton();
+            });
+        }
+
+        document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+            menu.addEventListener('click', function (e) {
+                const parent = this.parentElement;
+                const submenu = parent.querySelector('.sidebar-submenu');
+                if (!submenu || this.getAttribute('href') !== '#') return;
+
+                e.preventDefault();
+                const isActive = parent.classList.contains('active');
+
+                document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+                    item.classList.remove('active');
+                    const sm = item.querySelector('.sidebar-submenu');
+                    if (sm) sm.style.display = 'none';
+                });
+
+                if (!isActive) {
+                    parent.classList.add('active');
+                    submenu.style.display = 'block';
+                }
+            });
+        });
     });
-  }
+    </script>
 
-  // Sidebar dropdown
-  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
-    menu.addEventListener('click', function (e) {
-      const parent = this.parentElement;
-      const submenu = parent.querySelector('.sidebar-submenu');
-      if (!submenu || this.getAttribute('href') !== '#') return;
-
-      e.preventDefault();
-      const isActive = parent.classList.contains('active');
-
-      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
-        item.classList.remove('active');
-        const sm = item.querySelector('.sidebar-submenu');
-        if (sm) sm.style.display = 'none';
-      });
-
-      if (!isActive) {
-        parent.classList.add('active');
-        submenu.style.display = 'block';
-      }
-    });
-  });
-});
-</script>
-
-
-
-
-
-
-
-
-    </body>
+</body>
 </html>

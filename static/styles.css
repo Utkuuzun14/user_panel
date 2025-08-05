@@ -849,6 +849,28 @@ span[id$="Validate"] {
   padding: 0 20px;
   box-sizing: border-box;
 }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: #27364A;
+  z-index: 1000;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+/* Açıldığında içeri kayar */
+.page.wrapper.sidebar-open .sidebar {
+  transform: translateX(0);
+}
+
+/* Sayfa içeriği sabit kalır */
+.page-content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
 
 /* Warning yazısı */
 .page-content h4 {
