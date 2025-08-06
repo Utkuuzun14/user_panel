@@ -3,206 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDG - Threshold Settings</title>
+    
+    <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <title>TDG </title>
     <link rel="stylesheet" href="/static/styles.css?v=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
-</head>
-    <body>
-        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
-        </a>
-        <div class="page wrapper chiller-theme toggled">
-            {% include 'sidebar.html' %}
-
-
-           </h2>
-<main class="page-content">
-  <div class="container-fluid">
-    <h2 class="section-title">Threshold Trigger Settings</h2>
-    <hr>
-
-    <!-- İlk Form -->
-    <form action="/templates/settings/triggerset.html" method="post" class="mb-5">
-      <div class="form-group">
-        <label for="threshold">Pre Trigger (Second)</label>
-        <input type="number" class="form-control" id="threshold" name="threshold" value="10" />
-      </div>
-      <div class="form-group">
-        <label for="postThreshold">Post Trigger (Second)</label>
-        <input type="number" class="form-control" id="postThreshold" name="postThreshold" value="30" />
-      </div>
-      <div class="form-group">
-        <label for="windowSize">Window Size (Second)</label>
-        <input
-          type="number"
-          class="form-control window-dark"
-          id="windowSize"
-          name="windowSize"
-          value="1"
-          disabled
-          autocomplete="off"
-        />
-      </div>
-
-      <div class="row">
-        <div class="form-group col-md-4 col-12">
-          <label for="triggerLevelE">Trigger Level E Axis (Peak to Peak) (g)</label>
-          <input
-            class="form-control"
-            type="number"
-            value="0.005"
-            min="0"
-            step="0.0001"
-            id="triggerLevelE"
-            name="triggerLevelE"
-          />
-          <div class="form-check mt-1">
-            <input class="form-check-input" name="triggerLevelECheck" type="checkbox" checked id="triggerLevelECheck" />
-            <label class="form-check-label" for="triggerLevelECheck"></label>
-          </div>
-        </div>
-
-        <div class="form-group col-md-4 col-12">
-          <label for="triggerLevelN">Trigger Level N Axis (Peak to Peak) (g)</label>
-          <input
-            class="form-control"
-            type="number"
-            value="0.005"
-            min="0"
-            step="0.0001"
-            id="triggerLevelN"
-            name="triggerLevelN"
-          />
-          <div class="form-check mt-1">
-            <input class="form-check-input" name="triggerLevelNCheck" type="checkbox" checked id="triggerLevelNCheck" />
-            <label class="form-check-label" for="triggerLevelNCheck"></label>
-          </div>
-        </div>
-
-        <div class="form-group col-md-4 col-12">
-          <label for="triggerLevelZ">Trigger Level Z Axis (Peak to Peak) (g)</label>
-          <input
-            class="form-control"
-            type="number"
-            value="0.005"
-            min="0"
-            step="0.0001"
-            id="triggerLevelZ"
-            name="triggerLevelZ"
-          />
-          <div class="form-check mt-1">
-            <input class="form-check-input" name="triggerLevelZCheck" type="checkbox" checked id="triggerLevelZCheck" />
-            <label class="form-check-label" for="triggerLevelZCheck"></label>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="recordLogDay">Record Log Day</label>
-        <input type="number" class="form-control" id="recordLogDay" name="recordLogDay" value="10" />
-      </div>
-    </form>
-
-    <h2 class="section-title">STA/LTA Trigger Settings</h2>
-    <hr>
-
-    <!-- İkinci Form -->
-    <form action="/templates/settings/triggerset.html" method="post">
-      <div class="form-group">
-        <label for="staDuration">STA Duration (Second)</label>
-        <input type="number" class="form-control" id="staDuration" name="staDuration" value="10" />
-      </div>
-      <div class="form-group">
-        <label for="ltaDuration">LTA Duration (Second)</label>
-        <input type="number" class="form-control" id="ltaDuration" name="ltaDuration" value="30" />
-      </div>
-
-      <div class="row">
-  <!-- E Axis -->
-  <div class="form-group col-md-4 col-12">
-    <label for="staLtaE">STA/LTA Ratio E Axis</label>
-    <div class="d-flex align-items-center">
-      <input
-        class="form-check-input me-2"
-        type="checkbox"
-        id="staLtaECheck"
-        name="triggerLevelECheck"
-      />
-      <input
-        class="form-control flex-grow-1"
-        type="number"
-        value="2.0"
-        min="0"
-        step="0.0001"
-        id="staLtaE"
-        name="staLtaE"
-        style="width: 100%;"
-      />
-    </div>
-  </div>
-
-  <!-- N Axis -->
-<div class="form-group col-md-4 col-12">
-  <label for="staLtaN">STA/LTA Ratio N Axis</label>
-  <div class="d-flex align-items-center">
-    <input
-      class="form-check-input me-2"
-      type="checkbox"
-      id="staLtaNCheck"
-      name="triggerLevelNCheck"
-      style="flex-shrink: 0;" 
-    />
-    <input
-      class="form-control"
-      type="number"
-      value="2.0"
-      min="0"
-      step="0.0001"
-      id="staLtaN"
-      name="staLtaN"
-      style="width: 100%;"
-    />
-  </div>
-</div>
-
-
-  <!-- Z Axis -->
-  <div class="form-group col-md-4 col-12">
-    <label for="staLtaZ">STA/LTA Ratio Z Axis</label>
-    <div class="d-flex align-items-center">
-      <input
-        class="form-check-input me-2"
-        type="checkbox"
-        id="staLtaZCheck"
-        name="triggerLevelZCheck"
-      />
-      <input
-        class="form-control flex-grow-1"
-        type="number"
-        value="2.0"
-        min="0"
-        step="0.0001"
-        id="staLtaZ"
-        name="staLtaZ"
-        style="width: 100%;"
-      />
-    </div>
-  </div>
-</div>
-
-
-      <div class="form-group">
-        <label for="recordLogDay2">Record Log Day</label>
-        <input type="number" class="form-control" id="recordLogDay2" name="recordLogDay2" value="10" />
-      </div>
-
-      <div class="d-flex justify-content-end mt-4">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          style="
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSmtUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
+    
+    <style>
+        /* Custom Styles */
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-control {
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .form-check-input {
+            margin-top: 0.2rem;
+        }
+        
+        .btn-submit {
             background: linear-gradient(90deg, #007bff, #0056b3);
             color: #fff;
             border: none;
@@ -212,108 +43,221 @@
             font-weight: 600;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             transition: background 0.2s;
-          "
-        >
-          <span style="vertical-align: middle; margin-right: 8px;">
-            <svg
-              width="18"
-              height="18"
-              fill="#fff"
-              style="vertical-align: middle"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M15.854 4.146a.5.5 0 0 0-.708 0L8 11.293 3.854 7.146a.5.5 0 1 0-.708.708l4.5 4.5a.5.5 0 0 0 .708 0l7-7a.5.5 0 0 0 0-.708z"
-              />
-            </svg>
-          </span>
-          Send To Device
-        </button>
-      </div>
-    </form>
-  </div>
-</main>
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(90deg, #0069d9, #004a9f);
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
 
- 
-
+<body>
+    <!-- Sidebar Toggle Button -->
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    
+    <!-- Main Wrapper -->
+    <div class="page wrapper chiller-theme toggled">
+        <!-- Sidebar -->
+        {% include 'sidebar.html' %}
+        
+        <!-- Main Content -->
+        <main class="page-content">
+            <div class="container-fluid">
+                <!-- Threshold Trigger Settings -->
+                <h2 class="section-title">Threshold Trigger Settings</h2>
+                <hr>
                 
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+                <form action="/templates/settings/triggerset.html" method="post" class="mb-5">
+                    <!-- Time Settings -->
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="threshold">Pre Trigger (Second)</label>
+                            <input type="number" class="form-control" id="threshold" name="threshold" value="10">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="postThreshold">Post Trigger (Second)</label>
+                            <input type="number" class="form-control" id="postThreshold" name="postThreshold" value="30">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="windowSize">Window Size (Second)</label>
+                            <input type="number" class="form-control window-dark" id="windowSize" name="windowSize" value="1" disabled>
+                        </div>
+                    </div>
+                    
+                    <!-- Axis Settings -->
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="triggerLevelE">Trigger Level E Axis (Peak to Peak) (g)</label>
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" id="triggerLevelECheck" name="triggerLevelECheck" checked>
+                                <input class="form-control" type="number" value="0.005" min="0" step="0.0001" id="triggerLevelE" name="triggerLevelE">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                            <label for="triggerLevelN">Trigger Level N Axis (Peak to Peak) (g)</label>
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" id="triggerLevelNCheck" name="triggerLevelNCheck" checked>
+                                <input class="form-control" type="number" value="0.005" min="0" step="0.0001" id="triggerLevelN" name="triggerLevelN">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                            <label for="triggerLevelZ">Trigger Level Z Axis (Peak to Peak) (g)</label>
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" id="triggerLevelZCheck" name="triggerLevelZCheck" checked>
+                                <input class="form-control" type="number" value="0.005" min="0" step="0.0001" id="triggerLevelZ" name="triggerLevelZ">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Log Settings -->
+                    <div class="form-group">
+                        <label for="recordLogDay">Record Log Day</label>
+                        <input type="number" class="form-control" id="recordLogDay" name="recordLogDay" value="10">
+                    </div>
+                </form>
+                
+                <!-- STA/LTA Trigger Settings -->
+                <h2 class="section-title">STA/LTA Trigger Settings</h2>
+                <hr>
+                
+                <form action="/templates/settings/triggerset.html" method="post">
+                    <!-- Duration Settings -->
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="staDuration">STA Duration (Second)</label>
+                            <input type="number" class="form-control" id="staDuration" name="staDuration" value="10">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ltaDuration">LTA Duration (Second)</label>
+                            <input type="number" class="form-control" id="ltaDuration" name="ltaDuration" value="30">
+                        </div>
+                    </div>
+                    
+                    <!-- Ratio Settings -->
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="staLtaE">STA/LTA Ratio E Axis</label>
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" id="staLtaECheck" name="triggerLevelECheck">
+                                <input class="form-control" type="number" value="2.0" min="0" step="0.0001" id="staLtaE" name="staLtaE">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                            <label for="staLtaN">STA/LTA Ratio N Axis</label>
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" id="staLtaNCheck" name="triggerLevelNCheck">
+                                <input class="form-control" type="number" value="2.0" min="0" step="0.0001" id="staLtaN" name="staLtaN">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                            <label for="staLtaZ">STA/LTA Ratio Z Axis</label>
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" id="staLtaZCheck" name="triggerLevelZCheck">
+                                <input class="form-control" type="number" value="2.0" min="0" step="0.0001" id="staLtaZ" name="staLtaZ">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Log Settings -->
+                    <div class="form-group">
+                        <label for="recordLogDay2">Record Log Day</label>
+                        <input type="number" class="form-control" id="recordLogDay2" name="recordLogDay2" value="10">
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn btn-submit">
+                            <svg width="18" height="18" fill="#fff" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 8px;">
+                                <path d="M15.854 4.146a.5.5 0 0 0-.708 0L8 11.293 3.854 7.146a.5.5 0 1 0-.708.708l4.5 4.5a.5.5 0 0 0 .708 0l7-7a.5.5 0 0 0 0-.708z"/>
+                            </svg>
+                            Send To Device
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
 
-<!-- Leaflet JS, HTML içinde yüklenmeli -->
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    
+    <!-- Sidebar Script -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const wrapper = document.querySelector(".page.wrapper");
+        const showSidebarBtn = document.getElementById("show-sidebar");
+        const closeSidebarBtn = document.getElementById("close-sidebar");
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const wrapper = document.querySelector(".page.wrapper");
-  const showSidebarBtn = document.getElementById("show-sidebar");
-  const closeSidebarBtn = document.getElementById("close-sidebar");
+        // Responsive sidebar handling
+        function updateSidebar() {
+            if (!wrapper) return;
+            
+            const isMobile = window.innerWidth <= 768;
+            wrapper.classList.toggle("toggled", isMobile);
+            if (showSidebarBtn) {
+                showSidebarBtn.style.display = isMobile ? "block" : "none";
+            }
+        }
 
-  function updateSidebarOnResize() {
-    if (!wrapper) return;
-    if (window.innerWidth <= 768) {
-      wrapper.classList.add("toggled");
-    } else {
-      wrapper.classList.remove("toggled");
-    }
-    updateShowSidebarButton();
-  }
+        // Initial setup
+        updateSidebar();
+        window.addEventListener("resize", updateSidebar);
 
-  function updateShowSidebarButton() {
-    if (!wrapper || !showSidebarBtn) return;
-    if (wrapper.classList.contains("toggled")) {
-      showSidebarBtn.style.display = "block";
-    } else {
-      showSidebarBtn.style.display = "none";
-    }
-  }
+        // Sidebar toggle events
+        if (showSidebarBtn && wrapper) {
+            showSidebarBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                wrapper.classList.remove("toggled");
+                showSidebarBtn.style.display = "none";
+            });
+        }
 
-  updateSidebarOnResize();
-  window.addEventListener("resize", updateSidebarOnResize);
+        if (closeSidebarBtn && wrapper) {
+            closeSidebarBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                wrapper.classList.add("toggled");
+                showSidebarBtn.style.display = "block";
+            });
+        }
 
-  if (showSidebarBtn && wrapper) {
-    showSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.remove("toggled");
-      updateShowSidebarButton();
+        // Dropdown menu handling
+        document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+            menu.addEventListener('click', function(e) {
+                const parent = this.parentElement;
+                const submenu = parent.querySelector('.sidebar-submenu');
+                
+                if (!submenu || this.getAttribute('href') !== '#') return;
+                e.preventDefault();
+                
+                const isActive = parent.classList.contains('active');
+                
+                // Close all other dropdowns
+                document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+                    item.classList.remove('active');
+                    const sm = item.querySelector('.sidebar-submenu');
+                    if (sm) sm.style.display = 'none';
+                });
+                
+                // Toggle current dropdown if not active
+                if (!isActive) {
+                    parent.classList.add('active');
+                    submenu.style.display = 'block';
+                }
+            });
+        });
     });
-  }
-
-  if (closeSidebarBtn && wrapper) {
-    closeSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.add("toggled");
-      updateShowSidebarButton();
-    });
-  }
-
-  // Sidebar dropdown
-  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
-    menu.addEventListener('click', function (e) {
-      const parent = this.parentElement;
-      const submenu = parent.querySelector('.sidebar-submenu');
-      if (!submenu || this.getAttribute('href') !== '#') return;
-
-      e.preventDefault();
-      const isActive = parent.classList.contains('active');
-
-      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
-        item.classList.remove('active');
-        const sm = item.querySelector('.sidebar-submenu');
-        if (sm) sm.style.display = 'none';
-      });
-
-      if (!isActive) {
-        parent.classList.add('active');
-        submenu.style.display = 'block';
-      }
-    });
-  });
-});
-</script>
-
-
-
-
-    </body>
+    </script>
+</body>
 </html>

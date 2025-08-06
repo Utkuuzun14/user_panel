@@ -3,115 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDG - Advanced Settings</title>
+    
+    <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <title>TDG </title>
     <link rel="stylesheet" href="/static/styles.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSmitUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
 </head>
-    <body>
-        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
-        </a>
-        <div class="page wrapper chiller-theme toggled">
 
-            <!--Sidebar-->
-            {% include 'sidebar.html' %}
-           
-            <main class="page-content">
+<body>
+    <!-- Sidebar Toggle Button -->
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    
+    <!-- Main Wrapper -->
+    <div class="page wrapper chiller-theme toggled">
+        <!-- Sidebar -->
+        {% include 'sidebar.html' %}
+        
+        <!-- Main Content -->
+        <main class="page-content">
             <div class="container-fluid">
                 <h2>Advanced Settings</h2>
                 <hr>
+                
                 <div id="form-response"></div>
-                <h4><b>Warning: Do not use if you are not authorized person.</b></h4><br>
+                
+                <div class="alert alert-warning">
+                    <h4><b>Warning: Do not use if you are not authorized person.</b></h4>
+                </div>
+                
                 <div class="button-wrapper">
-                    <button id="rebootButton" type="button" class="btn btn-danger" style="width: 200px;"><svg class="svg-inline--fa fa-power-off fa-w-16" style="float: left; padding-top: 5px;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="power-off" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M400 54.1c63 45 104 118.6 104 201.9 0 136.8-110.8 247.7-247.5 248C120 504.3 8.2 393 8 256.4 7.9 173.1 48.9 99.3 111.8 54.2c11.7-8.3 28-4.8 35 7.7L162.6 90c5.9 10.5 3.1 23.8-6.6 31-41.5 30.8-68 79.6-68 134.9-.1 92.3 74.5 168.1 168 168.1 91.6 0 168.6-74.2 168-169.1-.3-51.8-24.7-101.8-68.1-134-9.7-7.2-12.4-20.5-6.5-30.9l15.8-28.1c7-12.4 23.2-16.1 34.8-7.8zM296 264V24c0-13.3-10.7-24-24-24h-32c-13.3 0-24 10.7-24 24v240c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24z"></path></svg><!-- <i class="fas fa-power-off" style="float: left; padding-top: 5px;"></i> Font Awesome fontawesome.com --><b> Reboot Device</b></button><br><br> 
-                    <a href="/uploads/metadata.xml" target="__blank" class="btn btn-success" style="width: 200px;"><svg class="svg-inline--fa fa-download fa-w-16" style="float: left; padding-top: 5px;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="download" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"></path></svg><!-- <i class="fas fa-download" style="float: left; padding-top: 5px;"></i> Font Awesome fontawesome.com --><b> Download Metadata</b>
+                    <!-- Reboot Button -->
+                    <button id="rebootButton" type="button" class="btn btn-danger" style="width: 200px;">
+                        <i class="fas fa-power-off" style="float: left; padding-top: 5px;"></i>
+                        <b> Reboot Device</b>
+                    </button>
+                    
+                    <br><br>
+                    
+                    <!-- Download Button -->
+                    <a href="/uploads/metadata.xml" target="_blank" class="btn btn-success" style="width: 200px;">
+                        <i class="fas fa-download" style="float: left; padding-top: 5px;"></i>
+                        <b> Download Metadata</b>
                     </a>
                 </div>               
             </div>
-            </main>
+        </main>
+    </div>
 
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    
+    <!-- Sidebar JavaScript -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Sidebar Elements
+        const wrapper = document.querySelector(".page.wrapper");
+        const showSidebarBtn = document.getElementById("show-sidebar");
+        const closeSidebarBtn = document.getElementById("close-sidebar");
+
+        // Responsive Sidebar Handling
+        function updateSidebarOnResize() {
+            if (!wrapper) return;
+            
+            if (window.innerWidth <= 768) {
+                wrapper.classList.add("toggled");
+            } else {
+                wrapper.classList.remove("toggled");
+            }
+            updateShowSidebarButton();
+        }
+
+        // Toggle Button Visibility
+        function updateShowSidebarButton() {
+            if (!wrapper || !showSidebarBtn) return;
+            
+            if (wrapper.classList.contains("toggled")) {
+                showSidebarBtn.style.display = "block";
+            } else {
+                showSidebarBtn.style.display = "none";
+            }
+        }
+
+        // Initialize Sidebar
+        updateSidebarOnResize();
+        window.addEventListener("resize", updateSidebarOnResize);
+
+        // Sidebar Toggle Events
+        if (showSidebarBtn && wrapper) {
+            showSidebarBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                wrapper.classList.remove("toggled");
+                updateShowSidebarButton();
+            });
+        }
+
+        if (closeSidebarBtn && wrapper) {
+            closeSidebarBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                wrapper.classList.add("toggled");
+                updateShowSidebarButton();
+            });
+        }
+
+        // Dropdown Menu Handling
+        document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+            menu.addEventListener('click', function (e) {
+                const parent = this.parentElement;
+                const submenu = parent.querySelector('.sidebar-submenu');
                 
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-<!--Sidebar JS-->
+                if (!submenu || this.getAttribute('href') !== '#') return;
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const wrapper = document.querySelector(".page.wrapper");
-  const showSidebarBtn = document.getElementById("show-sidebar");
-  const closeSidebarBtn = document.getElementById("close-sidebar");
+                e.preventDefault();
+                const isActive = parent.classList.contains('active');
 
-  function updateSidebarOnResize() {
-    if (!wrapper) return;
-    if (window.innerWidth <= 768) {
-      wrapper.classList.add("toggled");
-    } else {
-      wrapper.classList.remove("toggled");
-    }
-    updateShowSidebarButton();
-  }
+                // Close all other dropdowns
+                document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+                    item.classList.remove('active');
+                    const sm = item.querySelector('.sidebar-submenu');
+                    if (sm) sm.style.display = 'none';
+                });
 
-  function updateShowSidebarButton() {
-    if (!wrapper || !showSidebarBtn) return;
-    if (wrapper.classList.contains("toggled")) {
-      showSidebarBtn.style.display = "block";
-    } else {
-      showSidebarBtn.style.display = "none";
-    }
-  }
-
-  updateSidebarOnResize();
-  window.addEventListener("resize", updateSidebarOnResize);
-
-  if (showSidebarBtn && wrapper) {
-    showSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.remove("toggled");
-      updateShowSidebarButton();
+                // Toggle current dropdown
+                if (!isActive) {
+                    parent.classList.add('active');
+                    submenu.style.display = 'block';
+                }
+            });
+        });
     });
-  }
-
-  if (closeSidebarBtn && wrapper) {
-    closeSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.add("toggled");
-      updateShowSidebarButton();
-    });
-  }
-
-  // Sidebar dropdown
-  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
-    menu.addEventListener('click', function (e) {
-      const parent = this.parentElement;
-      const submenu = parent.querySelector('.sidebar-submenu');
-      if (!submenu || this.getAttribute('href') !== '#') return;
-
-      e.preventDefault();
-      const isActive = parent.classList.contains('active');
-
-      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
-        item.classList.remove('active');
-        const sm = item.querySelector('.sidebar-submenu');
-        if (sm) sm.style.display = 'none';
-      });
-
-      if (!isActive) {
-        parent.classList.add('active');
-        submenu.style.display = 'block';
-      }
-    });
-  });
-});
-</script>
-
-
-
-
-
-
-
-
-    </body>
+    </script>
+</body>
 </html>

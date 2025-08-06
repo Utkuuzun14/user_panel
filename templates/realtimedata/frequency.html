@@ -18,11 +18,56 @@
             <!--Sidebar-->
             {% include 'sidebar.html' %}
       
-
+            <main class="page-content">
+                <div class="container-fluid">
+                    <h2>Real-Time Data</h2>
+                    <hr>
+                    <div id ="graph">
+                        <div id="plot-bod-x" style="height: 300px;"></div>
+                        
+                    </div>
+                </div>
                 
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 <!--Sidebar JS-->
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const response = await fetch('/static/ivme.json');
+            const data = await response.json();
+
+            function plotWaveform(sensorName, elementId) {
+                const sensor = data.sensor.find(s => s.name === sensorName);
+                if (!sensor) return;
+
+                const wf = sensor.waveform;
+                const dt = wf.dt;
+                const values = wf.wf_values;
+                const timestamps = values.map((_, i) => i * dt);
+
+                Plotly.newPlot(elementId, [{
+                    x: timestamps,
+                    y: values,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: sensorName
+                }], {
+                    margin: { t: 30 },
+                    title: sensorName + ' (' + sensor.unit + ')',
+                    xaxis: { title: 'Time (s)' },
+                    yaxis: { title: sensor.unit },
+                    responsive: true
+                }, { responsive: true });
+            }
+
+            plotWaveform("Bod_X", "plot-bod-x");
+
+        } catch (err) {
+            console.error('Veri yüklenemedi:', err);
+        }
+    });</script>
+
 
 <script>
 

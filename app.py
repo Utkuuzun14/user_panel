@@ -1,3 +1,4 @@
+from optparse import Values
 from flask import Flask, request, render_template, jsonify, send_file, abort, json
 from datetime import datetime
 import matplotlib as plt
@@ -98,7 +99,7 @@ def get_records():
     
     return jsonify(records)
 
-# TXT DOSYALARINI HTML SAYFASINA AKTAR (YENİ!)
+# TXT DOSYALARINI HTML SAYFASINA AKTAR 
 @app.route("/records")
 def records_page():
     files = glob.glob(os.path.join(RECORDS_FOLDER, "*.txt"))
@@ -113,7 +114,7 @@ def records_page():
             "size": f"{round(os.path.getsize(file)/1024, 2)} KB"
         })
 
-    return render_template("records/continiousrec.html", records=records)
+    return render_template("records/continuousrec.html", records=records)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -172,18 +173,6 @@ def record_content_page(filename):
 #         "content": content
 #     })
 
-# DOSYA İNDİRME
-@app.route("/download")
-def download_file():
-    filename = request.args.get("filename")
-    if not filename:
-        return "Dosya adı belirtilmeli", 400
-
-    filepath = os.path.join(RECORDS_FOLDER, filename)
-    if not os.path.exists(filepath):
-        return "Dosya bulunamadı", 404
-
-    return send_file(filepath, as_attachment=True)
 
 # DOSYA SİLME
 @app.route("/delete", methods=["DELETE"])
@@ -211,7 +200,7 @@ def download_records():
 
     # time_records klasöründen tüm txt dosyalarını sırayla al
     all_files = sorted(
-        [f for f in os.listdir(time_records_dir) if f.endswith(".txt")]
+        [f for f in os.listdir(time_records) if f.endswith(".txt")] 
     )
 
     # ID'ler sırasına göre eşleştir (1-based index)
@@ -267,6 +256,38 @@ def rowdata_data():
         }
 
         traces.append(trace)
+
+@app.route('/frequency')
+def frequency():
+    return render_template('realtimedata/frequency.html')
+@app.route('/frequency/data')
+def frequency_data():
+    json_path = os.path.join('data', 'veri.json')
+    with open(json_path, 'r', encoding='utf-8') as f:
+        raw = json.load(f)
+    traces = []
+    sensor_list = raw.get("sensor", [])
+    if not raw:
+        return jsonify(traces)
+    for sensor in sensor_list:
+        name = sensor.get("name")
+        waveform = sensor.get("waveform", {})
+        values = waveform.get("wf_values", [])
+        dt = waveform.get("dt", 1)
+        
+        # X ve Y değerlerini hesapla
+        x = [i * dt for i in range(len(values))]
+        y = values
+        trace = {
+            'x': x,
+            'y': y,
+            'type': 'scatter',
+            'mode': 'lines',
+            'name': name
+        }
+
+        traces.append(trace)
+    
 
     return jsonify(traces)
 if __name__ == "__main__":  

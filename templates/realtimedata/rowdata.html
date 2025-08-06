@@ -20,19 +20,24 @@
 <body>
 
     <!-- Sidebar Toggle Button -->
-    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#"><i class="fas fa-bars"></i></a>
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
 
-    <div class="page wrapper chiller-theme toggled">
+    <div class="page wrapper toggled">
         <!-- Sidebar -->
         {% include 'sidebar.html' %}
 
         <!-- Main Content -->
-        <div class="container" style="padding: 20px;">
-            <h2>Seismograph Data</h2>
-            <div id="plot-bod-x" style="height: 300px;"></div>
-            <div id="plot-bod-y" style="height: 300px;"></div>
-            <div id="plot-bod-z" style="height: 300px;"></div>
-        </div>
+        <main class="page-content">
+            <div class="container-fluid" style="padding: 20px;">
+                <h2>Real-Time Data</h2>
+                <hr>
+                <div id="plot-bod-x" style="height: 300px;"></div>
+                <div id="plot-bod-y" style="height: 300px;"></div>
+                <div id="plot-bod-z" style="height: 300px;"></div>
+            </div>
+        </main>
     </div>
 
     <!-- JS: Seismograph Graphs -->
@@ -83,8 +88,10 @@
         const showSidebarBtn = document.getElementById("show-sidebar");
         const closeSidebarBtn = document.getElementById("close-sidebar");
 
+        // Update sidebar based on window size
         function updateSidebarOnResize() {
             if (!wrapper) return;
+            
             if (window.innerWidth <= 768) {
                 wrapper.classList.add("toggled");
             } else {
@@ -93,14 +100,22 @@
             updateShowSidebarButton();
         }
 
+        // Update the visibility of the show sidebar button
         function updateShowSidebarButton() {
             if (!wrapper || !showSidebarBtn) return;
-            showSidebarBtn.style.display = wrapper.classList.contains("toggled") ? "block" : "none";
+            
+            if (wrapper.classList.contains("toggled")) {
+                showSidebarBtn.style.display = "block";
+            } else {
+                showSidebarBtn.style.display = "none";
+            }
         }
 
+        // Initialize sidebar state
         updateSidebarOnResize();
         window.addEventListener("resize", updateSidebarOnResize);
 
+        // Show sidebar button event
         if (showSidebarBtn && wrapper) {
             showSidebarBtn.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -109,6 +124,7 @@
             });
         }
 
+        // Close sidebar button event
         if (closeSidebarBtn && wrapper) {
             closeSidebarBtn.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -117,21 +133,25 @@
             });
         }
 
+        // Sidebar dropdown functionality
         document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
             menu.addEventListener('click', function (e) {
                 const parent = this.parentElement;
                 const submenu = parent.querySelector('.sidebar-submenu');
+                
                 if (!submenu || this.getAttribute('href') !== '#') return;
 
                 e.preventDefault();
                 const isActive = parent.classList.contains('active');
 
+                // Close all other dropdowns
                 document.querySelectorAll('.sidebar-dropdown').forEach(item => {
                     item.classList.remove('active');
                     const sm = item.querySelector('.sidebar-submenu');
                     if (sm) sm.style.display = 'none';
                 });
 
+                // Open current dropdown if it wasn't active
                 if (!isActive) {
                     parent.classList.add('active');
                     submenu.style.display = 'block';
@@ -139,7 +159,7 @@
             });
         });
     });
-    </script>
+    </script>>
 
 </body>
 </html>

@@ -9,411 +9,401 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
 
     <style>
-  #toast {
-  position: fixed;
-  left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
-  min-width: 280px;
-  max-width: 90%;
-  background-color: rgba(51, 51, 51, 0.9);
-  color: #fff;
-  text-align: center;
-  padding: 16px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 9999;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: opacity 0.3s ease;
-}
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            min-width: 280px;
+            max-width: 90%;
+            background-color: rgba(51, 51, 51, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: opacity 0.3s ease;
+        }
 
-#toast.show {
-  animation: slideInUp 0.5s forwards;
-  pointer-events: auto;
-}
+        #toast.show {
+            animation: slideInUp 0.5s forwards;
+            pointer-events: auto;
+        }
 
-#toast.hide {
-  animation: slideOutDown 0.5s forwards;
-  pointer-events: none;
-}
+        #toast.hide {
+            animation: slideOutDown 0.5s forwards;
+            pointer-events: none;
+        }
 
-@keyframes slideInUp {
-  from {
-    transform: translateX(-50%) translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-}
+        @keyframes slideInUp {
+            from {
+                transform: translateX(-50%) translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
 
-@keyframes slideOutDown {
-  from {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-50%) translateY(100%);
-    opacity: 0;
-  }
-}
+        @keyframes slideOutDown {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(100%);
+                opacity: 0;
+            }
+        }
 
-/* Responsive için yazı boyutu küçülsün, genişlik azalsın */
-@media (max-width: 480px) {
-  #toast {
-    font-size: 14px;
-    padding: 12px 18px;
-    min-width: 220px;
-  }
-}
-
-  </style>
-  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
+        @media (max-width: 480px) {
+            #toast {
+                font-size: 14px;
+                padding: 12px 18px;
+                min-width: 220px;
+            }
+        }
+    </style>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
 </head>
 
-    <body>
-        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
-        </a>
-        <div class="page wrapper chiller-theme toggled">
-            {% include 'sidebar.html' %}
+<body>
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    
+    <div class="page wrapper chiller-theme toggled">
+        {% include 'sidebar.html' %}
 
+        <main class="page-content"> 
+            <div class="container-fluid">
+                <h2>Record Settings</h2>
+                <hr>
+                <div id="toast"></div>        
+                
+                <form action="/start_recording" method="post" id="recordForm">
+                    <div class="form-group">
+                        <label for="recordPeriod"><b>Continuous Record Period (sec)</b></label>
+                        <select class="custom-select mr-sm-2" name="recordPeriod" required>
+                            <option value="5">5 seconds</option>
+                            <option value="10">10 seconds</option>
+                            <option value="30">30 seconds</option>
+                        </select>
+                    </div>
 
-      <main class="page-content"> 
-        <div class="container-fluid">
-    <h2>Record Settings</h2>
-    <hr>
-    <div id="toast"></div>        
-    <form action="/start_recording" method="post" id="recordForm">
-      <div class="form-group">
-        <label for="recordPeriod"><b>Continuous Record Period (sec)</b></label>
-        <select class="custom-select mr-sm-2" name="recordPeriod" required>
-          <option value="5">5 seconds</option>
-          <option value="10">10 seconds</option>
-          <option value="30">30 seconds</option>
-        </select>
-      </div>
+                    <div class="form-group">
+                        <label for="recordDay"><b>Max Record Log Day</b></label>
+                        <input class="form-control" type="number" name="recordDay" value="10" max="30" min="1" id="recordDay" required>
 
-    <div class="form-group">
-        <label for="recordDay"><b>Max Record Log Day</b></label>
-        <input class="form-control" type="number" name="recordDay" value="10" max="30" min="1" id="recordDay" required>
+                        <div class="form-info">
+                            <span class="info-icon" title="Old logs exceeding this number of days will be deleted.">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0d6efd" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
+                                    10-4.48 10-10S17.52 2 12 2zm0 3c.83 0 1.5.67 
+                                    1.5 1.5S12.83 8 12 8s-1.5-.67-1.5-1.5S11.17 5 
+                                    12 5zm2 13h-4v-2h1v-4h-1v-2h3v6h1v2z"/>
+                                </svg>
+                            </span>
+                            <span class="info-text">Old records before "Max Record Log Day Parameters" will be deleted.</span>
+                        </div>
+                    </div>
 
-        <div class="form-info">
-            <span class="info-icon" title="Old logs exceeding this number of days will be deleted.">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0d6efd" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
-                10-4.48 10-10S17.52 2 12 2zm0 3c.83 0 1.5.67 
-                1.5 1.5S12.83 8 12 8s-1.5-.67-1.5-1.5S11.17 5 
-                12 5zm2 13h-4v-2h1v-4h-1v-2h3v6h1v2z"/>
-            </svg>
+                    <h2 class="section-title">Time-Based Record</h2>
+                    <table class="record-table">
+                        <thead>
+                            <tr>
+                                <th></th> 
+                                <th>Başlangıç Saati</th>
+                                <th>Bitiş Saati</th>
+                                <th>Kayıt Sıklığı</th>
+                                <th>Zaman Birimi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="active[]" checked></td>
+                                <td><input type="time" name="startTime[]" value="09:00" required></td>
+                                <td><input type="time" name="endTime[]" value="10:00" required></td>
+                                <td><input type="number" name="duration[]" value="15" min="1" required></td>
+                                <td>
+                                    <select name="unit[]">
+                                        <option value="second">Saniye</option>
+                                        <option value="minute" selected>Dakika</option>
+                                        <option value="hour">Saat</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            </span>
-            <span class="info-text">Old records before "Max Record Log Day Parameters" will be deleted.</span>
-        </div>
+                    <div class="text-right mt-3">
+                        <button type="submit" class="btn btn-primary" id="startRecordingBtn">Send To Device</button>
+                    </div>
+
+                    <div id="toast"></div>
+                </form> 
+            </div>
+        </main>
     </div>
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 
-    
+    <!-- Leaflet JS, HTML içinde yüklenmeli -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-      <h2 class="section-title">Time-Based Record</h2>
-      <table class="record-table">
-        <thead>
-          <tr>
-            <th></th> 
-            <th>Başlangıç Saati</th>
-            <th>Bitiş Saati</th>
-            <th>Kayıt Sıklığı</th>
-            <th>Zaman Birimi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" name="active[]" checked></td>
-            <td><input type="time" name="startTime[]" value="09:00" required></td>
-            <td><input type="time" name="endTime[]" value="10:00" required></td>
-            <td><input type="number" name="duration[]" value="15" min="1" required></td>
-            <td>
-              <select name="unit[]">
-                <option value="second">Saniye</option>
-                <option value="minute" selected>Dakika</option>
-                <option value="hour">Saat</option>
-              </select>
-            </td>
-          </tr>
-          
-        </tbody>
-      </table>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const wrapper = document.querySelector(".page.wrapper");
+            const showSidebarBtn = document.getElementById("show-sidebar");
+            const closeSidebarBtn = document.getElementById("close-sidebar");
 
-      <div class="text-right mt-3">
-        <button type="submit" class="btn btn-primary" id="startRecordingBtn">Send To Device</button>
-      </div>
+            function updateSidebarOnResize() {
+                if (!wrapper) return;
+                if (window.innerWidth <= 768) {
+                    wrapper.classList.add("toggled");
+                } else {
+                    wrapper.classList.remove("toggled");
+                }
+                updateShowSidebarButton();
+            }
 
-      <div id="toast"></div>
+            function updateShowSidebarButton() {
+                if (!wrapper || !showSidebarBtn) return;
+                if (wrapper.classList.contains("toggled")) {
+                    showSidebarBtn.style.display = "block";
+                } else {
+                    showSidebarBtn.style.display = "none";
+                }
+            }
 
-    </form> 
-        
-  </div>
-</main>
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+            updateSidebarOnResize();
+            window.addEventListener("resize", updateSidebarOnResize);
 
-<!-- Leaflet JS, HTML içinde yüklenmeli -->
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+            if (showSidebarBtn && wrapper) {
+                showSidebarBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    wrapper.classList.remove("toggled");
+                    updateShowSidebarButton();
+                });
+            }
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const wrapper = document.querySelector(".page.wrapper");
-  const showSidebarBtn = document.getElementById("show-sidebar");
-  const closeSidebarBtn = document.getElementById("close-sidebar");
+            if (closeSidebarBtn && wrapper) {
+                closeSidebarBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    wrapper.classList.add("toggled");
+                    updateShowSidebarButton();
+                });
+            }
 
-  function updateSidebarOnResize() {
-    if (!wrapper) return;
-    if (window.innerWidth <= 768) {
-      wrapper.classList.add("toggled");
-    } else {
-      wrapper.classList.remove("toggled");
-    }
-    updateShowSidebarButton();
-  }
+            // Sidebar dropdown
+            document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+                menu.addEventListener('click', function (e) {
+                    const parent = this.parentElement;
+                    const submenu = parent.querySelector('.sidebar-submenu');
+                    if (!submenu || this.getAttribute('href') !== '#') return;
 
-  function updateShowSidebarButton() {
-    if (!wrapper || !showSidebarBtn) return;
-    if (wrapper.classList.contains("toggled")) {
-      showSidebarBtn.style.display = "block";
-    } else {
-      showSidebarBtn.style.display = "none";
-    }
-  }
+                    e.preventDefault();
+                    const isActive = parent.classList.contains('active');
 
-  updateSidebarOnResize();
-  window.addEventListener("resize", updateSidebarOnResize);
+                    document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+                        item.classList.remove('active');
+                        const sm = item.querySelector('.sidebar-submenu');
+                        if (sm) sm.style.display = 'none';
+                    });
 
-  if (showSidebarBtn && wrapper) {
-    showSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.remove("toggled");
-      updateShowSidebarButton();
-    });
-  }
+                    if (!isActive) {
+                        parent.classList.add('active');
+                        submenu.style.display = 'block';
+                    }
+                });
+            });
+        });
 
-  if (closeSidebarBtn && wrapper) {
-    closeSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.add("toggled");
-      updateShowSidebarButton();
-    });
-  }
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="active[]"]');
 
-  // Sidebar dropdown
-  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
-    menu.addEventListener('click', function (e) {
-      const parent = this.parentElement;
-      const submenu = parent.querySelector('.sidebar-submenu');
-      if (!submenu || this.getAttribute('href') !== '#') return;
+            checkboxes.forEach((checkbox) => {
+                updateRowState(checkbox);
 
-      e.preventDefault();
-      const isActive = parent.classList.contains('active');
+                checkbox.addEventListener("change", function () {
+                    updateRowState(this);
+                });
+            });
 
-      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
-        item.classList.remove('active');
-        const sm = item.querySelector('.sidebar-submenu');
-        if (sm) sm.style.display = 'none';
-      });
+            function updateRowState(checkbox) {
+                const row = checkbox.closest("tr");
+                const inputs = row.querySelectorAll('input:not([type="checkbox"]), select, textarea');
 
-      if (!isActive) {
-        parent.classList.add('active');
-        submenu.style.display = 'block';
-      }
-    });
-  });
-});
+                if (checkbox.checked) {
+                    row.style.opacity = "1";
+                    inputs.forEach(input => input.disabled = false);
+                } else {
+                    row.style.opacity = "0.5";
+                    inputs.forEach(input => input.disabled = true);
+                }
+            }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const checkboxes = document.querySelectorAll('input[type="checkbox"][name="active[]"]');
+            const form = document.getElementById("recordForm");
+            form.addEventListener("submit", function () {
+                checkboxes.forEach((checkbox) => {
+                    const row = checkbox.closest("tr");
+                    const inputs = row.querySelectorAll('input:not([type="checkbox"]), select, textarea');
 
-  checkboxes.forEach((checkbox) => {
-    updateRowState(checkbox); // Sayfa ilk yüklendiğinde çalıştır
+                    if (!checkbox.checked) {
+                        inputs.forEach(input => input.disabled = true);
+                    }
+                });
+            });
+        });
 
-    checkbox.addEventListener("change", function () {
-      updateRowState(this); // Checkbox her değiştiğinde kontrol et
-    });
-  });
+        document.getElementById("recordForm").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-  function updateRowState(checkbox) {
-    const row = checkbox.closest("tr");
-    const inputs = row.querySelectorAll('input:not([type="checkbox"]), select, textarea');
+            fetch("/start_recording", {
+                method: "POST",
+                body: new FormData(this)
+            })
+            .then(res => res.json())
+            .then(data => {
+                showToast(data.success ? "✅ Veriler başarıyla kaydedildi." : "❌ Kayıt sırasında bir hata oluştu.");
+            })
+            .catch(() => {
+                showToast("⚠️ Sunucuya bağlanırken hata oluştu.");
+            });
+        });
 
-    if (checkbox.checked) {
-      row.style.opacity = "1";           // normal görünüm
-      inputs.forEach(input => input.disabled = false);
-    } else {
-      row.style.opacity = "0.5";         // soluk görünüm
-      inputs.forEach(input => input.disabled = true);
-    }
-  }
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.classList.add("show");
 
-  // Submit öncesi sadece aktif inputlar gidecek
-  const form = document.getElementById("recordForm");
-  form.addEventListener("submit", function () {
-    checkboxes.forEach((checkbox) => {
-      const row = checkbox.closest("tr");
-      const inputs = row.querySelectorAll('input:not([type="checkbox"]), select, textarea');
-
-      if (!checkbox.checked) {
-        inputs.forEach(input => input.disabled = true); // seçili değilse gönderilmesin
-      }
-    });
-  });
-});
-
-document.getElementById("recordForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    fetch("/start_recording", {
-        method: "POST",
-        body: new FormData(this)
-    })
-    .then(res => res.json())
-    .then(data => {
-        showToast(data.success ? "✅ Veriler başarıyla kaydedildi." : "❌ Kayıt sırasında bir hata oluştu.");
-    })
-    .catch(() => {
-        showToast("⚠️ Sunucuya bağlanırken hata oluştu.");
-    });
-});
-
-function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.innerText = message;
-    toast.classList.add("show");
-
-    // 4 saniye sonra toast gizlensin
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 4000);
-}
-
-</script>
-
-    </body>
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 4000);
+        }
+    </script>
+</body>
 </html>

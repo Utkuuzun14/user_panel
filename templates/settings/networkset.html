@@ -3,138 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDG</title>
+    
+    <!-- CSS Links -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <title>TDG </title>
     <link rel="stylesheet" href="/static/styles.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODtXkTEQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALDSURBVEhLrZa7axRBHMd3LxqNRCwkwQe+MODt3kREQoNWNhaCaGfjqzO9hVhYmEJI4d9go0TFByIiKmKjCDa+chdROEkhany/UGM8P9+d2c3dZvd2inzhw/xmb2Z+O7/5zW/Pr4TBLs/zjsMGkKagAc/g5Gi1dkkPZ1MdvT0952k3Qskyx7IMlvL7hYmJ95PYsybt9CvtQtOdoddQZrffTNfzGK8X2wYHYDUsgJ8wxLi7tIXSAnONmSntUKFu1jzYC4dgO2yx7Qlwkpy20w9IO1XoFRk/6k1ruW0LJadKnDwpCunF1U8/k0qVcrnD2m0lpy+Mmak1sMqYifogMGaLur2Sv9LabaVE2kF7FHRlOuEXKDEWg5LkEdyAKiijd8JW+ADPQXPWQRfchHPwCnQsU42GV6/Wam+xE2WFKVIlLBNafxDzFKTDdhUGyVZltzJaO7wG69VP6TcMwTDjo6uXm0ij1TEN0OJKprTG4J0xNbY2TnPW9GZI2a4CtCLqIZfszZIWSs9VBcuTjmm+MYud6nzTV0bSOabn5h4ViqtcpLZObSU6AwpnHV7CbbjCb3qhZqk65UlH9c+YxTuVjsCeJvaBHKe12bZZ+gJJKW0XkhaRoUqEJaCzUUGJUX8tDEMvqJbHlUzrq9U1OhZHx8lpGJQ7fd9Xdg6Akih2qJCpr7Koa6UxI/AJ4nD+gToOtdtITk7Z5Saa66Cd5OkpDLB4XsYncnW6m+Y0LIoeZOs+DlWpEjFPGasX1sdAO9duH7okktQNRcW85RNZCQJt6CDoG3sRLsMduOfqVA6LoqICMC0/mqOPQ1IUrPpcneYViWZlrZX1oiVXp8rA5HLn6LNtm5X132rS1akK+l9j5uqJbWPpSj2AN/Dd8hFuOWVvGAZdDNTnaT8ogzUvTixFQd/cw2Tv4+iJFdmr+9sPOm/NYefe+H+IM6vdCn68xAAAAABJRU5ErkJggg==" type="image/x-icon">
 </head>
-    <body>
-        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
-            <i class="fas fa-bars"></i>
-        </a>
-        <div class="page wrapper  toggled">
-            {% include 'sidebar.html' %}
-          <main class="page-content">
+
+<body>
+    <!-- Sidebar Toggle Button -->
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    
+    <!-- Page Wrapper -->
+    <div class="page wrapper toggled">
+        {% include 'sidebar.html' %}
+        
+        <!-- Main Content -->
+        <main class="page-content">
             <div class="container-fluid">
                 <h2>Network Settings</h2>
                 <hr>
+                
+                <!-- Form Response Message -->
                 <div id="form-response"></div>
+                
+                <!-- Network Settings Form -->
                 <form action="/settingsNetwork" method="post">
+                    <!-- IP Address Field -->
                     <div class="form-group">
                         <label for="ipAddress" class="row-3"><b>IP Address (IPv4)</b></label>
                         <div class="row-5">
-                            <input class="form-control" name="ipAddress" type="text" value="192.168.13.20" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('ipAddress','ipAddressValidate')" id="ipAddress" autocomplete="off"><span id="ipAddressValidate"></span>
+                            <input class="form-control" name="ipAddress" type="text" value="192.168.13.20" 
+                                   minlength="7" maxlength="15" size="15" 
+                                   onkeyup="ipValidUp('ipAddress','ipAddressValidate')" 
+                                   id="ipAddress" autocomplete="off">
+                            <span id="ipAddressValidate"></span>
                         </div>
                     </div>
+                    
+                    <!-- MAC Address Field -->
                     <div class="form-group">
                         <label for="macAddress" class="row-3"><b>MAC Address</b></label>
                         <div class="row-5">
-                            <input class="form-control" name="macAddress" type="text" value="E4:15:F6:F4:83:87" id="macAddress" disabled="" autocomplete="off">
+                            <input class="form-control" name="macAddress" type="text" 
+                                   value="E4:15:F6:F4:83:87" id="macAddress" disabled="" autocomplete="off">
                         </div>
                     </div>                     
+                    
+                    <!-- Subnet Mask Field -->
                     <div class="form-group">
                         <label for="subnetMask" class="row-3"><b>Subnet Mask</b></label>
                         <div class="row-5">
-                            <input class="form-control" name="subnetMask" type="text" value="255.255.255.0" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('subnetMask','subnetMaskValidate')" id="subnetMask" autocomplete="off"><span id="subnetMaskValidate"></span>
+                            <input class="form-control" name="subnetMask" type="text" value="255.255.255.0" 
+                                   minlength="7" maxlength="15" size="15" 
+                                   onkeyup="ipValidUp('subnetMask','subnetMaskValidate')" 
+                                   id="subnetMask" autocomplete="off">
+                            <span id="subnetMaskValidate"></span>
                         </div>
                     </div> 
+                    
+                    <!-- Gateway Address Field -->
                     <div class="form-group">
                         <label for="gatewayAddress" class="row-3"><b>Gateway Address</b></label>
                         <div class="row-5">
-                            <input class="form-control" name="gatewayAddress" type="text" value="192.168.13.1" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('gatewayAddress','gatewayAddressValidate')" id="gatewayAddress" autocomplete="off"><span id="gatewayAddressValidate"></span>
+                            <input class="form-control" name="gatewayAddress" type="text" value="192.168.13.1" 
+                                   minlength="7" maxlength="15" size="15" 
+                                   onkeyup="ipValidUp('gatewayAddress','gatewayAddressValidate')" 
+                                   id="gatewayAddress" autocomplete="off">
+                            <span id="gatewayAddressValidate"></span>
                         </div>
                     </div> 
+                    
+                    <!-- DNS Address Field -->
                     <div class="form-group">
                         <label for="dnsAddress" class="row-3"><b>DNS Address</b></label>
                         <div class="row-5">
-                            <input class="form-control" name="dnsAddress" type="text" value="10.32.12.180" minlength="7" maxlength="15" size="15" onkeyup="ipValidUp('dnsAddress','dnsAddressValidate')" id="dnsAddress" autocomplete="off"><span id="dnsAddressValidate"></span>
+                            <input class="form-control" name="dnsAddress" type="text" value="10.32.12.180" 
+                                   minlength="7" maxlength="15" size="15" 
+                                   onkeyup="ipValidUp('dnsAddress','dnsAddressValidate')" 
+                                   id="dnsAddress" autocomplete="off">
+                            <span id="dnsAddressValidate"></span>
                         </div>
                     </div> 
-                    <input type="submit" id="btnSendToDevice" class="btn btn-secondary" value="Send to Device" style="float:right; margin-top: 10px; margin-bottom: 10px;">
+                    
+                    <!-- Submit Button -->
+                    <input type="submit" id="btnSendToDevice" class="btn btn-secondary" 
+                           value="Send to Device" style="float:right; margin-top: 10px; margin-bottom: 10px;">
                 </form>
             </div>
+        </main>
+    </div>
 
-          </main>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
+    <!-- Main JavaScript -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const wrapper = document.querySelector(".page.wrapper");
+        const showSidebarBtn = document.getElementById("show-sidebar");
+        const closeSidebarBtn = document.getElementById("close-sidebar");
+
+        // Update sidebar based on window size
+        function updateSidebarOnResize() {
+            if (!wrapper) return;
+            
+            if (window.innerWidth <= 768) {
+                wrapper.classList.add("toggled");
+            } else {
+                wrapper.classList.remove("toggled");
+            }
+            updateShowSidebarButton();
+        }
+
+        // Update the visibility of the show sidebar button
+        function updateShowSidebarButton() {
+            if (!wrapper || !showSidebarBtn) return;
+            
+            if (wrapper.classList.contains("toggled")) {
+                showSidebarBtn.style.display = "block";
+            } else {
+                showSidebarBtn.style.display = "none";
+            }
+        }
+
+        // Initialize sidebar state
+        updateSidebarOnResize();
+        window.addEventListener("resize", updateSidebarOnResize);
+
+        // Show sidebar button event
+        if (showSidebarBtn && wrapper) {
+            showSidebarBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                wrapper.classList.remove("toggled");
+                updateShowSidebarButton();
+            });
+        }
+
+        // Close sidebar button event
+        if (closeSidebarBtn && wrapper) {
+            closeSidebarBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                wrapper.classList.add("toggled");
+                updateShowSidebarButton();
+            });
+        }
+
+        // Sidebar dropdown functionality
+        document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
+            menu.addEventListener('click', function (e) {
+                const parent = this.parentElement;
+                const submenu = parent.querySelector('.sidebar-submenu');
                 
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+                if (!submenu || this.getAttribute('href') !== '#') return;
 
-<!-- Leaflet JS, HTML içinde yüklenmeli -->
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+                e.preventDefault();
+                const isActive = parent.classList.contains('active');
 
-<script>
+                // Close all other dropdowns
+                document.querySelectorAll('.sidebar-dropdown').forEach(item => {
+                    item.classList.remove('active');
+                    const sm = item.querySelector('.sidebar-submenu');
+                    if (sm) sm.style.display = 'none';
+                });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const wrapper = document.querySelector(".page.wrapper");
-  const showSidebarBtn = document.getElementById("show-sidebar");
-  const closeSidebarBtn = document.getElementById("close-sidebar");
-
-  function updateSidebarOnResize() {
-    if (!wrapper) return;
-    if (window.innerWidth <= 768) {
-      wrapper.classList.add("toggled");
-    } else {
-      wrapper.classList.remove("toggled");
-    }
-    updateShowSidebarButton();
-  }
-
-  function updateShowSidebarButton() {
-    if (!wrapper || !showSidebarBtn) return;
-    if (wrapper.classList.contains("toggled")) {
-      showSidebarBtn.style.display = "block";
-    } else {
-      showSidebarBtn.style.display = "none";
-    }
-  }
-
-  updateSidebarOnResize();
-  window.addEventListener("resize", updateSidebarOnResize);
-
-  if (showSidebarBtn && wrapper) {
-    showSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.remove("toggled");
-      updateShowSidebarButton();
+                // Open current dropdown if it wasn't active
+                if (!isActive) {
+                    parent.classList.add('active');
+                    submenu.style.display = 'block';
+                }
+            });
+        });
     });
-  }
-
-  if (closeSidebarBtn && wrapper) {
-    closeSidebarBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      wrapper.classList.add("toggled");
-      updateShowSidebarButton();
-    });
-  }
-
-  // Sidebar dropdown
-  document.querySelectorAll('.sidebar-dropdown > a').forEach(menu => {
-    menu.addEventListener('click', function (e) {
-      const parent = this.parentElement;
-      const submenu = parent.querySelector('.sidebar-submenu');
-      if (!submenu || this.getAttribute('href') !== '#') return;
-
-      e.preventDefault();
-      const isActive = parent.classList.contains('active');
-
-      document.querySelectorAll('.sidebar-dropdown').forEach(item => {
-        item.classList.remove('active');
-        const sm = item.querySelector('.sidebar-submenu');
-        if (sm) sm.style.display = 'none';
-      });
-
-      if (!isActive) {
-        parent.classList.add('active');
-        submenu.style.display = 'block';
-      }
-    });
-  });
-});
-</script>
-
-
-
-    </body>
+    </script>
+</body>
 </html>
