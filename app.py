@@ -1,6 +1,6 @@
 from optparse import Values
 from flask import Flask, request, render_template, jsonify, send_file, abort, json
-from datetime import datetime
+from datetime import date, datetime
 import matplotlib as plt
 import numpy as np
 import glob
@@ -174,38 +174,64 @@ def record_content_page(filename):
 #     })
 
 
-# DOSYA SİLME
-@app.route("/delete", methods=["DELETE"])
-def delete_file():
-    filename = request.json.get("filename")
-    if not filename:
-        return jsonify({"error": "Dosya adı belirtilmeli"}), 400
-
-    filepath = os.path.join(RECORDS_FOLDER, filename)
-    if not os.path.exists(filepath):
-        return jsonify({"error": "Dosya bulunamadı"}), 404
-
-    os.remove(filepath)
-    return jsonify({"success": True})
-
-# SAHTE VERİ ÜRETİCİ
-def get_machine_data(index):
-    return f"TEST_DATA_for_index_{index}"
-
-#Dosya İndirme
-@app.route('/download-records', methods=['POST'])
-def download_records():
+# DOSYA SİLME (Time_Records klasöründe dosya silme)
+@app.route("/delete-time-records", methods=["POST"])
+def delete_time_records():
     data = request.get_json()
     ids = data.get("ids", [])
 
-    # time_records klasöründen tüm txt dosyalarını sırayla al
-    all_files = sorted(
-        [f for f in os.listdir(time_records) if f.endswith(".txt")] 
-    )
+    time_dir = os.path.join(os.getcwd(), "time_records")
+    all_files = sorted([f for f in os.listdir(time_dir) if f.endswith(".txt")])
+    deleted_files = []
 
-    # ID'ler sırasına göre eşleştir (1-based index)
+    for id in ids:
+        try:
+            file_index = int(id) - 1
+            if 0 <= file_index < len(all_files):
+                file_path = os.path.join(time_dir, all_files[file_index])
+                os.remove(file_path)
+                deleted_files.append(all_files[file_index])
+        except Exception as e:
+            print(f"Dosya silme hatası: {e}")
+    
+    return jsonify({"deleted": deleted_files, "message": "Time dosyalar silindi."})
+
+
+    
+# DOSYA SİLME (TRİGGER KAYITLARI İÇİN)
+@app.route("/delete-trigger-records", methods=["POST"])
+def delete_trigger_records():
+    data = request.get_json()
+    ids = data.get("ids", [])
+
+    trigger_dir = os.path.join(os.getcwd(), "trigger_records")
+    all_files = sorted([f for f in os.listdir(trigger_dir) if f.endswith(".txt")])
+    deleted_files = []
+
+    for id in ids:
+        try:
+            file_index = int(id) - 1
+            if 0 <= file_index < len(all_files):
+                file_path = os.path.join(trigger_dir, all_files[file_index])
+                os.remove(file_path)
+                deleted_files.append(all_files[file_index])
+        except Exception as e:
+            print(f"Dosya silme hatası: {e}")
+    
+    return jsonify({"deleted": deleted_files, "message": "Trigger dosyalar silindi."})
+
+
+
+#Dosya İndirme(TRİGGER KAYITLARI İÇİN)
+@app.route('/download-trigger-records', methods=['POST'])
+def download_trigger_records():
+    data = request.get_json()
+    ids = data.get("ids", [])
+    trigger_dir = os.path.join(os.getcwd(), "trigger_records")
+
+    all_files = sorted([f for f in os.listdir(trigger_dir) if f.endswith(".txt")])
     selected_files = [
-        os.path.join(RECORDS_DIR, all_files[int(id)-1])
+        os.path.join(trigger_dir, all_files[int(id)-1])
         for id in ids if int(id)-1 < len(all_files)
     ]
 
@@ -215,14 +241,46 @@ def download_records():
     if len(selected_files) == 1:
         return send_file(selected_files[0], as_attachment=True)
 
-    # Çoklu dosya: ziple
     zip_buffer = BytesIO()
     with ZipFile(zip_buffer, "w") as zipf:
         for file_path in selected_files:
             zipf.write(file_path, arcname=os.path.basename(file_path))
     zip_buffer.seek(0)
 
-    return send_file(zip_buffer, as_attachment=True, download_name="kayitlar.zip")
+    return send_file(zip_buffer, as_attachment=True, download_name="trigger_kayitlar.zip")
+
+
+#Dosya İndirme(TIME KAYITLARI İÇİN)
+@app.route('/download-time-records', methods=['POST'])
+def download_time_records():
+    data = request.get_json()
+    ids = data.get("ids", [])
+    time_dir = os.path.join(os.getcwd(), "time_records")
+
+    all_files = sorted([f for f in os.listdir(time_dir) if f.endswith(".txt")])
+    selected_files = [
+        os.path.join(time_dir, all_files[int(id)-1])
+        for id in ids if int(id)-1 < len(all_files)
+    ]
+
+    if not selected_files:
+        return "Dosya bulunamadi", 404
+
+    if len(selected_files) == 1:
+        return send_file(selected_files[0], as_attachment=True)
+
+    zip_buffer = BytesIO()
+    with ZipFile(zip_buffer, "w") as zipf:
+        for file_path in selected_files:
+            zipf.write(file_path, arcname=os.path.basename(file_path))
+    zip_buffer.seek(0)
+
+    return send_file(zip_buffer, as_attachment=True, download_name="time_kayitlar.zip")
+
+
+# SAHTE VERİ ÜRETİCİ
+def get_machine_data(index):
+    return f"TEST_DATA_for_index_{index}"
 
 @app.route('/rowdata')
 def rowdata():
@@ -230,7 +288,7 @@ def rowdata():
 
 @app.route('/rowdata/data')
 def rowdata_data():
-    json_path = os.path.join('data', 'veri.json')
+    json_path = os.path.join('static', 'ivme.json')
     with open(json_path, 'r', encoding='utf-8') as f:
         raw = json.load(f)
     
@@ -260,35 +318,57 @@ def rowdata_data():
 @app.route('/frequency')
 def frequency():
     return render_template('realtimedata/frequency.html')
+
 @app.route('/frequency/data')
 def frequency_data():
-    json_path = os.path.join('data', 'veri.json')
-    with open(json_path, 'r', encoding='utf-8') as f:
-        raw = json.load(f)
-    traces = []
-    sensor_list = raw.get("sensor", [])
-    if not raw:
-        return jsonify(traces)
-    for sensor in sensor_list:
-        name = sensor.get("name")
-        waveform = sensor.get("waveform", {})
-        values = waveform.get("wf_values", [])
-        dt = waveform.get("dt", 1)
-        
-        # X ve Y değerlerini hesapla
-        x = [i * dt for i in range(len(values))]
-        y = values
-        trace = {
-            'x': x,
-            'y': y,
-            'type': 'scatter',
-            'mode': 'lines',
-            'name': name
-        }
-
-        traces.append(trace)
+    json_path = os.path.join('static', 'ivme.json')
     
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        
+        traces = []
+        sensor_list = raw.get("sensor", [])
+        
+        if not sensor_list:  # Sensör listesi boşsa
+            return jsonify({"error": "No sensor data found"}), 404
+        
+        for sensor in sensor_list:
+            name = sensor.get("name")
+            unit = sensor.get("unit", "")  # Birim bilgisini de ekledik
+            waveform = sensor.get("waveform", {})
+            values = waveform.get("wf_values", [])
+            dt = waveform.get("dt", 1)
+            
+            # X ve Y değerlerini hesapla
+            x = [i * dt for i in range(len(values))]
+            y = values
+            
+            trace = {
+                'x': x,
+                'y': y,
+                'type': 'scatter',
+                'mode': 'lines',
+                'name': f"{name} ({unit})",  # Birim bilgisini isme ekledik
+                'line': {'width': 1.5}  # Çizgi kalınlığı eklendi
+            }
+            traces.append(trace)
+        
+        return jsonify({
+            "data": traces,
+            "layout": {  # Layout bilgisini de ekleyebiliriz
+                "title": "Sensör Verileri",
+                "xaxis": {"title": "Zaman (s)"},
+                "yaxis": {"title": "Genlik"}
+            }
+        })
+    
+    except FileNotFoundError:
+        return jsonify({"error": "Data file not found"}), 404
+    except json.JSONDecodeError:
+        return jsonify({"error": "Invalid JSON data"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    return jsonify(traces)
 if __name__ == "__main__":  
     app.run(debug=True)

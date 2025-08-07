@@ -45,7 +45,7 @@
                         </thead>
                         <tbody>
                             {% for record in records %}
-                            <tr data-id="{{ record.id }}">
+                            <tr data-id="{{ loop.index }}">
                                 <td data-label="File Name">{{ record.filename }}</td>
                                 <td data-label="File Date">{{ record.date }}</td>
                                 <td data-label="File Size">{{ record.size }}</td>
@@ -62,10 +62,10 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-right">
-                        <button id="bulk-download" class="btn btn-success">
+                        <button id="download-btn" class="btn btn-success">
                             <i class="fas fa-download"></i> Download 
                         </button>
-                        <button id="bulk-delete" class="btn btn-danger">
+                        <button id="delete-btn" class="btn btn-danger">
                             <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
@@ -172,7 +172,104 @@ $(document).ready(function () {
   });
 });
 
+document.getElementById("download-btn").addEventListener("click", async () => {
+  var table = $('#records-table').DataTable();
+  var selectedRows = table.rows({ selected: true }).nodes();
+  var selectedIds = [];
+
+  selectedRows.each(function(row) {
+    selectedIds.push(row.getAttribute("data-id"));
+  });
+
+  if (selectedIds.length === 0) {
+    alert("Lütfen en az bir kayıt seçin.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/download-time-records", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids: selectedIds })
+    });
+
+    if (!response.ok) {
+      throw new Error("İndirme sırasında hata oluştu.");
+    }
+
+    const blob = await response.blob();
+
+    let filename = "kayitlar.zip";
+    const contentDisposition = response.headers.get("Content-Disposition");
+    if (contentDisposition) {
+      const match = contentDisposition.match(/filename="?([^"]+)"?/);
+      if (match && match[1]) {
+        filename = match[1];
+      }
+    }
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+document.querySelectorAll("#records-table tbody tr").forEach(row => {
+  row.addEventListener("click", function () {
+    this.classList.toggle("selected");
+  });
+});
+
+document.getElementById("delete-btn").addEventListener("click", async () => {
+  var table = $('#records-table').DataTable();
+  var selectedRows = table.rows({ selected: true }).nodes();
+  var selectedIds = [];
+
+  selectedRows.each(function(row) {
+    selectedIds.push(row.getAttribute("data-id"));
+  });
+
+  if (selectedIds.length === 0) {
+    alert("Lütfen en az bir kayıt seçin.");
+    return;
+  }
+
+  if (!confirm("Seçilen kayıtlar silinecek, emin misiniz?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch("/delete-time-records", {  // Backend endpoint adresi
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids: selectedIds })
+    });
+
+    if (!response.ok) {
+      throw new Error("Silme işlemi başarısız.");
+    }
+
+    // Başarılıysa tablodan seçilen satırları kaldır
+    table.rows({ selected: true }).remove().draw(false);
+
+    alert("Seçilen kayıtlar silindi.");
+
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+
 </script>
+
 
 
 

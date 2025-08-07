@@ -13,7 +13,7 @@
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
         </a>
-        <div class="page wrapper chiller-theme toggled">
+        <div class="page wrapper toggled">
 
             <!--Sidebar-->
             {% include 'sidebar.html' %}
@@ -22,52 +22,92 @@
                 <div class="container-fluid">
                     <h2>Real-Time Data</h2>
                     <hr>
-                    <div id ="graph">
-                        <div id="plot-bod-x" style="height: 300px;"></div>
-                        
-                    </div>
+                    <div id="plot-container"></div>
+                    
                 </div>
                 
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-<!--Sidebar JS-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch('/static/ivme.json');
             const data = await response.json();
 
-            function plotWaveform(sensorName, elementId) {
-                const sensor = data.sensor.find(s => s.name === sensorName);
-                if (!sensor) return;
+            function plotWaveform(sensorNames, elementId) {
+                // Birden fazla sensör için veri hazırla
+                const traces = sensorNames.map(sensorName => {
+                    const sensor = data.sensor.find(s => s.name === sensorName);
+                    if (!sensor) {
+                        console.warn(`${sensorName} sensörü bulunamadı!`);
+                        return null;
+                    }
 
-                const wf = sensor.waveform;
-                const dt = wf.dt;
-                const values = wf.wf_values;
-                const timestamps = values.map((_, i) => i * dt);
+                    const wf = sensor.waveform; 
+                    const dt = wf.dt;
+                    const values = wf.wf_values;
+                    const timestamps = values.map((_, i) => i * dt);
 
-                Plotly.newPlot(elementId, [{
-                    x: timestamps,
-                    y: values,
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: sensorName
-                }], {
-                    margin: { t: 30 },
-                    title: sensorName + ' (' + sensor.unit + ')',
-                    xaxis: { title: 'Time (s)' },
-                    yaxis: { title: sensor.unit },
-                    responsive: true
-                }, { responsive: true });
+                    return {
+                        x: timestamps,
+                        y: values,
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: sensorName + ' (' + sensor.unit + ')',
+                        line: { width: 1.5 } // Çizgi kalınlığı
+                    };
+                }).filter(trace => trace !== null); // Null olanları filtrele
+
+                // Eğer hiç veri yoksa uyarı ver
+                if (traces.length === 0) {
+                    console.error('Gösterilecek veri bulunamadı!');
+                    return;
+                }
+
+                // Grafik ayarları
+                const layout = {
+                    margin: { t: 40, l: 50, r: 30, b: 40 },
+                    title: 'Sensör Verileri',
+                    xaxis: { 
+                        title: 'Zaman (s)',
+                        gridcolor: '#e0e0e0'
+                    },
+                    yaxis: { 
+                        title: 'Genlik',
+                        gridcolor: '#e0e0e0'
+                    },
+                    plot_bgcolor: '#f8f9fa',
+                    paper_bgcolor: '#f8f9fa',
+                    showlegend: true,
+                    legend: {
+                        orientation: 'h',
+                        y: -0.2
+                    },
+                    hovermode: 'closest'
+                };
+
+                // Grafik oluştur
+                Plotly.newPlot(elementId, traces, layout, {
+                    responsive: true,
+                    displayModeBar: true
+                });
             }
 
-            plotWaveform("Bod_X", "plot-bod-x");
+            
+            plotWaveform(["Bod_X", "Bod_Y", "Bod_Z"], "plot-container");
 
         } catch (err) {
-            console.error('Veri yüklenemedi:', err);
+            console.error('Veri yüklenirken hata oluştu:', err);
+            // Hata durumunda kullanıcıya bilgi gösterebilirsin
+            document.getElementById('plot-container').innerHTML = 
+                '<div class="alert alert-danger">Veri yüklenirken hata oluştu: ' + err.message + '</div>';
         }
-    });</script>
+    });
+</script>,
 
+<!--Sidebar JS-->
 
 <script>
 
