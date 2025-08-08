@@ -7,7 +7,7 @@
     
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/styles.css?v=1.0">
+    <link rel="stylesheet" href="/static/styles.css?v=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <!-- Favicon -->
@@ -54,6 +54,22 @@
             align-items: center;
             gap: 0.5rem;
         }
+        .d-flex.align-items-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.d-flex.align-items-center .form-check-input {
+  flex-shrink: 0; /* Checkbox sabit genişlikte kalsın */
+}
+
+.d-flex.align-items-center .form-control {
+  flex-grow: 1;  /* Input kalan tüm alanı kaplasın */
+  min-width: 0;  /* Taşmayı önler */
+}
+
+
     </style>
 </head>
 
@@ -177,7 +193,7 @@
                     </div>
                     
                     <!-- Submit Button -->
-                    <div class="d-flex justify-content-end mt-4">
+                    <div class="d-flex justify-content-end mt-4" style="display: flex; justify-content: flex-end;">
                         <button type="submit" class="btn btn-submit">
                             <svg width="18" height="18" fill="#fff" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 8px;">
                                 <path d="M15.854 4.146a.5.5 0 0 0-.708 0L8 11.293 3.854 7.146a.5.5 0 1 0-.708.708l4.5 4.5a.5.5 0 0 0 .708 0l7-7a.5.5 0 0 0 0-.708z"/>

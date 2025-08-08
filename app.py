@@ -82,22 +82,6 @@ def start_recording():
         "filename": filename
     })
 
-# TXT DOSYALARINI AL (JSON API)
-@app.route("/api/records")
-def get_records():
-    files = glob.glob(os.path.join(RECORDS_FOLDER, "*.txt"))
-    files.sort(key=os.path.getctime, reverse=True)
-
-    records = []
-    for file in files:
-        records.append({
-            "filename": os.path.basename(file),
-            "date": datetime.fromtimestamp(os.path.getctime(file)).strftime("%Y-%m-%d %H:%M:%S"),
-            "size": f"{round(os.path.getsize(file)/1024, 2)} KB",
-            "path": file
-        })
-    
-    return jsonify(records)
 
 # TXT DOSYALARINI HTML SAYFASINA AKTAR 
 @app.route("/records")
@@ -138,40 +122,6 @@ def trigger_records():
     return render_template("records/triggerrec.html", records=records)
 
 
-# TXT DOSYASI İÇERİĞİNİ HTML SAYFADA GÖSTER (YENİ ROUTE)
-@app.route("/record/<filename>")
-def record_content_page(filename):
-    # Dosya adı güvenlik için kontrol edilebilir
-    if ".." in filename or filename.startswith("/"):
-        abort(400, "Geçersiz dosya adı")
-
-    filepath = os.path.join(RECORDS_FOLDER, filename)
-    if not os.path.exists(filepath):
-        abort(404, "Dosya bulunamadı")
-
-    with open(filepath, 'r', encoding="utf-8") as f:
-        content = f.read()
-
-    return render_template("records/record_content.html", filename=filename, content=content)
-
-# DOSYA İÇERİĞİNİ JSON OLARAK DÖNEN API (İstersen kullanabilirsin)
-# @app.route("/api/record_content")
-# def get_record_content():
-#     filename = request.args.get("filename")
-#     if not filename:
-#         return jsonify({"error": "Dosya adı belirtilmeli"}), 400
-
-#     filepath = os.path.join(RECORDS_FOLDER, filename)
-#     if not os.path.exists(filepath):
-#         return jsonify({"error": "Dosya bulunamadı"}), 404
-
-#     with open(filepath, 'r', encoding="utf-8") as f:
-#         content = f.read()
-    
-#     return jsonify({
-#         "filename": filename,
-#         "content": content
-#     })
 
 
 # DOSYA SİLME (Time_Records klasöründe dosya silme)
